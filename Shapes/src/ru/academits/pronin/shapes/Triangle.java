@@ -38,4 +38,41 @@ public class Triangle implements Shape {
                 Math.sqrt(Math.pow(x3 - x2, 2) + Math.pow(y3 - y2, 2)) +
                 Math.sqrt(Math.pow(x1 - x3, 2) + Math.pow(y1 - y3, 2));
     }
+
+    @Override
+    public String toString() {
+        return "Triangle [x1 = " + x1 + ", y1 = " + y1 + ", x2 = " + x2 + ", y2 = " + y2 + ", x3 = " + x3 + ", y3 = " + y3 + "]";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        Triangle triangle = (Triangle) o;
+        return Double.compare(x1, triangle.x1) == 0 &&
+                Double.compare(y1, triangle.y1) == 0 &&
+                Double.compare(x2, triangle.x2) == 0 &&
+                Double.compare(y2, triangle.y2) == 0 &&
+                Double.compare(x3, triangle.x3) == 0 &&
+                Double.compare(y3, triangle.y3) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 37;
+        int hash = 1;
+        hash = prime * hash + Double.hashCode(x1);
+        hash = prime * hash + Double.hashCode(x2);
+        hash = prime * hash + Double.hashCode(x3);
+        hash = prime * hash + Double.hashCode(y1);
+        hash = prime * hash + Double.hashCode(y2);
+        hash = prime * hash + Double.hashCode(y3);
+        return hash;
+    }
 }

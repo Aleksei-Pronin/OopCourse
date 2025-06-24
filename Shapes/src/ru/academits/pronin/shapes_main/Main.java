@@ -17,8 +17,8 @@ public class Main {
         shapes[6] = new Rectangle(4, 5);
         shapes[7] = new Rectangle(7, 1);
 
-        System.out.println(getMaxAreaShape(shapes));
-        System.out.println(getSecondPerimeterShape(shapes));
+        System.out.println("Фигура с максимальной площадью - " + getMaxAreaShape(shapes));
+        System.out.println("Фигура со вторым по величине периметром - " + getSecondPerimeterShape(shapes));
     }
 
     public static Shape getMaxAreaShape(Shape[] shapes) {
