@@ -121,7 +121,10 @@ public class Vector {
 
     @Override
     public int hashCode() {
-        return Arrays.hashCode(coordinates);
+        final int prime = 37;
+        int hash = 1;
+        hash = prime * hash + Arrays.hashCode(coordinates);
+        return hash;
     }
 
     public static Vector getSum(Vector vector1, Vector vector2) {
