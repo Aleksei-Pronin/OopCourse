@@ -2,82 +2,81 @@ package ru.academits.pronin.matrix;
 
 import ru.academits.pronin.vector.Vector;
 
-import java.util.Arrays;
-
 public class Matrix {
-    private Vector[] vectors;
+    private Vector[] rows;
 
     public Matrix(int n, int m) {
         if (n <= 0 || m <= 0) {
             throw new IllegalArgumentException("IllegalArgumentException");
         }
 
-        vectors = new Vector[n];
+        rows = new Vector[n];
 
         for (int i = 0; i < n; i++) {
-            vectors[i] = new Vector(m);
+            rows[i] = new Vector(m);
         }
     }
 
     public Matrix(Matrix matrix) {
-        vectors = new Vector[matrix.vectors.length];
+        rows = new Vector[matrix.rows.length];
 
-        for (int i = 0; i < matrix.vectors.length; i++) {
-            vectors[i] = new Vector(matrix.vectors[i]);
+        for (int i = 0; i < matrix.rows.length; i++) {
+            rows[i] = new Vector(matrix.rows[i]);
         }
     }
 
     public Matrix(double[][] matrix) {
-        int maxLength = 0;
+        int columnsCount = 0;
 
         for (double[] row : matrix) {
-            maxLength = Math.max(maxLength, row.length);
+            columnsCount = Math.max(columnsCount, row.length);
         }
 
-        this.vectors = new Vector[matrix.length];
+        int rowsCount = matrix.length;
+        rows = new Vector[rowsCount];
 
-        for (int i = 0; i < matrix.length; i++) {
-            this.vectors[i] = new Vector(maxLength, matrix[i]);
+        for (int i = 0; i < rowsCount; i++) {
+            rows[i] = new Vector(columnsCount, matrix[i]);
         }
     }
 
     public Matrix(Vector[] vectors) {
-        int maxLength = 0;
+        int columnsCount = 0;
 
         for (Vector vector : vectors) {
-            maxLength = Math.max(maxLength, vector.getSize());
+            columnsCount = Math.max(columnsCount, vector.getSize());
         }
 
-        this.vectors = new Vector[vectors.length];
+        int rowsCount = vectors.length;
+        rows = new Vector[rowsCount];
 
-        for (int i = 0; i < vectors.length; i++) {
-            double[] components = new double[maxLength];
-
-            for (int j = 0; j < vectors[i].getSize(); j++) {
-                components[j] = vectors[i].getCoordinate(j);
-            }
-
-            this.vectors[i] = new Vector(components);
+        for (int i = 0; i < rowsCount; i++) {
+            rows[i] = new Vector(columnsCount);
+            rows[i].addVector(vectors[i]);
         }
     }
 
-    public int[] getSize() {
-        return new int[]{vectors.length, vectors[0].getSize()};
+    public int getRowsCount() {
+        return rows[0].getSize();
     }
 
-    public Vector getRowVector(int index) {
-        return vectors[index];
+    public int getColumnsCount() {
+        return rows.length;
     }
 
-    public void setRowVector(Vector vector, int index) {
-        vectors[index] = vector;
+    public Vector getRow(int index) {
+        return new Vector(rows[index]);
     }
 
-    public Vector getColumnVector(int index) {
-        double[] column = new double[vectors.length];
+    public void setRow(Vector vector, int index) {
+        rows[index] = new Vector(vector);
+    }
+
+    public Vector getColumn(int index) {
+        double[] column = new double[rows.length];
 
         for (int i = 0; i < column.length; i++) {
-            column[i] = vectors[i].getCoordinate(index);
+            column[i] = rows[i].getCoordinate(index);
         }
 
         return new Vector(column);
@@ -85,16 +84,67 @@ public class Matrix {
 
     @Override
     public String toString() {
-        int lastCoordinateIndex = this.vectors.length - 1;
+        int lastCoordinateIndex = this.rows.length - 1;
 
         StringBuilder stringBuilder = new StringBuilder("{");
 
         for (int i = 0; i < lastCoordinateIndex; i++) {
-            stringBuilder.append(vectors[i]).append(", ");
+            stringBuilder.append(rows[i]).append(", ");
         }
 
-        stringBuilder.append(vectors[lastCoordinateIndex]).append("}");
+        stringBuilder.append(rows[lastCoordinateIndex]).append("}");
 
         return stringBuilder.toString();
+    }
+
+
+    public double getDeterminant() {
+        if (getColumnsCount() != getRowsCount()) {
+            return 0.0;
+        }
+
+        int matrixSize = getColumnsCount();
+
+        if (matrixSize == 1) {
+            return rows[0].getCoordinate(0);
+        }
+
+        double determinant = 0;
+
+        for (int i = 0; i < matrixSize; i++) {
+            determinant += Math.pow(-1, i) * rows[0].getCoordinate(i) * getMinor(0, i).getDeterminant();
+        }
+
+        return determinant;
+    }
+
+    public Matrix getMinor(int row, int column) {
+        if (getColumnsCount() != getRowsCount()) {
+            return null;
+        }
+
+        int matrixSize = getColumnsCount();
+
+        double[][] minor = new double[matrixSize - 1][matrixSize - 1];
+
+        for (int i = 0; i < matrixSize; i++) {
+            for (int j = 0; j < matrixSize; j++) {
+                if (i == row || j == column) {
+                    continue;
+                }
+
+                if (i < row && j < column) {
+                    minor[i][j] = this.rows[i].getCoordinate(j);
+                } else if (i < row) {
+                    minor[i][j - 1] = this.rows[i].getCoordinate(j);
+                } else if (j < column) {
+                    minor[i - 1][j] = this.rows[i].getCoordinate(j);
+                } else {
+                    minor[i - 1][j - 1] = this.rows[i].getCoordinate(j);
+                }
+            }
+        }
+
+        return new Matrix(minor);
     }
 }
