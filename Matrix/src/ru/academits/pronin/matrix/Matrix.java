@@ -56,11 +56,11 @@ public class Matrix {
         }
     }
 
-    public int getRowsCount() {
+    public int getColumnsCount() {
         return rows[0].getSize();
     }
 
-    public int getColumnsCount() {
+    public int getRowsCount() {
         return rows.length;
     }
 
@@ -99,11 +99,11 @@ public class Matrix {
 
 
     public double getDeterminant() {
-        if (getColumnsCount() != getRowsCount()) {
+        if (getRowsCount() != getColumnsCount()) {
             return 0.0;
         }
 
-        int matrixSize = getColumnsCount();
+        int matrixSize = getRowsCount();
 
         if (matrixSize == 1) {
             return rows[0].getCoordinate(0);
@@ -119,11 +119,11 @@ public class Matrix {
     }
 
     public Matrix getMinor(int row, int column) {
-        if (getColumnsCount() != getRowsCount()) {
+        if (getRowsCount() != getColumnsCount()) {
             return null;
         }
 
-        int matrixSize = getColumnsCount();
+        int matrixSize = getRowsCount();
 
         double[][] minor = new double[matrixSize - 1][matrixSize - 1];
 
@@ -146,5 +146,33 @@ public class Matrix {
         }
 
         return new Matrix(minor);
+    }
+
+    public Matrix transpose() {
+        Matrix transposedMatrix = new Matrix(getColumnsCount(), getRowsCount());
+
+        for (int i = 0; i < getColumnsCount(); i++) {
+            transposedMatrix.setRow(getColumn(i), i);
+        }
+
+        return transposedMatrix;
+    }
+
+    public void multiplyByScalar(double scalar) {
+        for (int i = 0; i < getRowsCount(); i++) {
+            Vector row = getRow(i);
+            row.scalarMultiplication(scalar);
+            setRow(row, i);
+        }
+    }
+
+    public Vector multiplyByVector(Vector vector) {
+        double[] result = new double[getColumnsCount()];
+
+        for (int i = 0; i < vector.getSize(); i++) {
+            result[i] = Vector.getScalarProduct(getColumn(i), vector);
+        }
+
+        return new Vector(result);
     }
 }
