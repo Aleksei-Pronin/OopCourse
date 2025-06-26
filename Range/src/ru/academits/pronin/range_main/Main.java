@@ -17,7 +17,7 @@ public class Main {
 
         Range range1 = new Range(from1, to1);
 
-        System.out.println("Длина интервала " + range1 + " - " + range1.getRangeLength());
+        System.out.println("Длина интервала " + range1 + " - " + range1.getLength());
 
         System.out.println("Введите число:");
         double number = scanner.nextDouble();
