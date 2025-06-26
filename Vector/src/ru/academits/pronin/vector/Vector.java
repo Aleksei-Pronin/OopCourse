@@ -143,7 +143,7 @@ public class Vector {
         return result;
     }
 
-    public static double getSalarProduct(Vector vector1, Vector vector2) {
+    public static double getScalarProduct(Vector vector1, Vector vector2) {
         double result = 0;
 
         int minSize = Math.min(vector1.getSize(), vector2.getSize());
