@@ -34,7 +34,7 @@ public class Range {
     }
 
     public Range getIntersection(Range range) {
-        if (to < range.from && from > range.to) {
+        if (to <= range.from || from >= range.to) {
             return null;
         }
 
@@ -51,7 +51,7 @@ public class Range {
 
     public Range[] getDifference(Range range) {
         if (from >= range.from && to <= range.to) {
-            return new Range[0];
+            return new Range[]{};
         }
 
         if (from < range.from && to > range.to) {
