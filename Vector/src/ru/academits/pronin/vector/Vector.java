@@ -35,7 +35,7 @@ public class Vector {
 
     @Override
     public String toString() {
-        int lastCoordinateIndex = this.getSize() - 1;
+        int lastCoordinateIndex = getSize() - 1;
 
         StringBuilder stringBuilder = new StringBuilder("{");
 
@@ -49,33 +49,33 @@ public class Vector {
     }
 
     public void addVector(Vector vector) {
-        int thisSize = this.getSize();
+        int thisSize = getSize();
         int vectorSize = vector.getSize();
 
         if (thisSize < vectorSize) {
-            this.coordinates = Arrays.copyOf(coordinates, vectorSize);
+            coordinates = Arrays.copyOf(coordinates, vectorSize);
         }
 
         for (int i = 0; i < vectorSize; i++) {
-            this.coordinates[i] += vector.coordinates[i];
+            coordinates[i] += vector.coordinates[i];
         }
     }
 
     public void subtractVector(Vector vector) {
-        int thisSize = this.getSize();
+        int thisSize = getSize();
         int vectorSize = vector.getSize();
 
         if (thisSize < vectorSize) {
-            this.coordinates = Arrays.copyOf(coordinates, vectorSize);
+            coordinates = Arrays.copyOf(coordinates, vectorSize);
         }
 
         for (int i = 0; i < vectorSize; i++) {
-            this.coordinates[i] -= vector.coordinates[i];
+            coordinates[i] -= vector.coordinates[i];
         }
     }
 
     public void scalarMultiplication(double scalar) {
-        int size = this.getSize();
+        int size = getSize();
 
         for (int i = 0; i < size; i++) {
             coordinates[i] *= scalar;
@@ -83,7 +83,7 @@ public class Vector {
     }
 
     public void reverseVector() {
-        this.scalarMultiplication(-1.0);
+        scalarMultiplication(-1.0);
     }
 
     public double getVectorLength() {
@@ -149,7 +149,7 @@ public class Vector {
         int minSize = Math.min(vector1.getSize(), vector2.getSize());
 
         for (int i = 0; i < minSize; i++) {
-            result += vector1.getCoordinate(i) * vector1.getCoordinate(i);
+            result += vector1.getCoordinate(i) * vector2.getCoordinate(i);
         }
 
         return result;
