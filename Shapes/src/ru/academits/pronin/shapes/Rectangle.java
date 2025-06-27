@@ -45,7 +45,7 @@ public class Rectangle implements Shape {
         }
 
         Rectangle rectangle = (Rectangle) o;
-        return Double.compare(width, rectangle.width) == 0 && Double.compare(height, rectangle.height) == 0;
+        return width == rectangle.width && height == rectangle.height;
     }
 
     @Override

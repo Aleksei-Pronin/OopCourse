@@ -47,7 +47,7 @@ public class Circle implements Shape {
         }
 
         Circle circle = (Circle) o;
-        return Double.compare(radius, circle.radius) == 0;
+        return radius == circle.radius;
     }
 
     @Override
