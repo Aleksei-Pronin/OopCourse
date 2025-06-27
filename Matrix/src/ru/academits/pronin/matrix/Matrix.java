@@ -130,7 +130,7 @@ public class Matrix {
 
     public double getDeterminant() {
         if (rows.length != rows[0].getSize()) {
-            throw new IllegalArgumentException("Матрица должна быть квадратной, текущие размеры: " + rows.length + " x " + rows[0].getSize());
+            throw new IllegalArgumentException("Матрица должна быть квадратной, текущие размеры: " + rows.length + " на " + rows[0].getSize());
         }
 
         int matrixSize = rows.length;

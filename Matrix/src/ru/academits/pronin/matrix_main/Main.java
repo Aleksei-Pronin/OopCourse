@@ -59,13 +59,13 @@ public class Main {
         System.out.println(Matrix.getSum(matrix5, matrix6));
         System.out.println(Matrix.getDifference(matrix5, matrix6));
 
-        Matrix matrix7 = new Matrix(new double[][]{{1.0, 2.0, 2.0, 2}, {3.0, 1.0, 1, 1}});
-        Matrix matrix8 = new Matrix(new double[][]{{4.0, 2.0}, {3.0, 1.0}, {1.0, 5}});
+        Matrix matrix7 = new Matrix(new double[][]{{1.0, 2.0, 2.0}, {3.0, 1.0, 4.0}});
+        Matrix matrix8 = new Matrix(new double[][]{{4.0, 2.0}, {3.0, 1.0}, {1.0, 5.0}});
 
         System.out.println(Matrix.getProduct(matrix7, matrix8));
 
         Vector vector = matrix7.getRow(1);
 
-        System.out.println();
+        System.out.println(vector);
     }
 }
