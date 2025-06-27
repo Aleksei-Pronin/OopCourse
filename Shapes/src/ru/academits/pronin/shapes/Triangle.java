@@ -17,6 +17,30 @@ public class Triangle implements Shape {
         this.y3 = y3;
     }
 
+    public double getX1() {
+        return x1;
+    }
+
+    public double getY1() {
+        return y1;
+    }
+
+    public double getX2() {
+        return x2;
+    }
+
+    public double getY2() {
+        return y2;
+    }
+
+    public double getX3() {
+        return x3;
+    }
+
+    public double getY3() {
+        return y3;
+    }
+
     @Override
     public double getWidth() {
         return Math.max(x1, Math.max(x2, x3)) - Math.min(x1, Math.min(x2, x3));
@@ -29,14 +53,17 @@ public class Triangle implements Shape {
 
     @Override
     public double getArea() {
-        return (x2 - x1) * (y3 - y1) - (x3 - x1) * (y2 - y1) / 2;
+        return Math.abs((x2 - x1) * (y3 - y1) - (x3 - x1) * (y2 - y1)) / 2;
     }
 
     @Override
     public double getPerimeter() {
-        return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2)) +
-                Math.sqrt(Math.pow(x3 - x2, 2) + Math.pow(y3 - y2, 2)) +
-                Math.sqrt(Math.pow(x1 - x3, 2) + Math.pow(y1 - y3, 2));
+        return getSegmentLength(x1, y1, x2, y2) + getSegmentLength(x2, y2, x3, y3) + getSegmentLength(x3, y3, x1, y1);
+    }
+
+
+    public double getSegmentLength(double x1, double y1, double x2, double y2) {
+        return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
     }
 
     @Override
@@ -55,12 +82,12 @@ public class Triangle implements Shape {
         }
 
         Triangle triangle = (Triangle) o;
-        return Double.compare(x1, triangle.x1) == 0 &&
-                Double.compare(y1, triangle.y1) == 0 &&
-                Double.compare(x2, triangle.x2) == 0 &&
-                Double.compare(y2, triangle.y2) == 0 &&
-                Double.compare(x3, triangle.x3) == 0 &&
-                Double.compare(y3, triangle.y3) == 0;
+        return x1 == triangle.x1 &&
+                y1 == triangle.y1 &&
+                x2 == triangle.x2 &&
+                y2 == triangle.y2 &&
+                x3 == triangle.x3 &&
+                y3 == triangle.y3;
     }
 
     @Override

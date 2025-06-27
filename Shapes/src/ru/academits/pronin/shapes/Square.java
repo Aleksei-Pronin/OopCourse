@@ -7,6 +7,10 @@ public class Square implements Shape {
         this.side = side;
     }
 
+    public double getSide() {
+        return side;
+    }
+
     @Override
     public double getWidth() {
         return side;
@@ -19,7 +23,7 @@ public class Square implements Shape {
 
     @Override
     public double getArea() {
-        return Math.pow(side, 2);
+        return side * side;
     }
 
     @Override
