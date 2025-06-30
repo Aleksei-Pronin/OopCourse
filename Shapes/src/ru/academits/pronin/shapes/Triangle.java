@@ -61,8 +61,7 @@ public class Triangle implements Shape {
         return getSegmentLength(x1, y1, x2, y2) + getSegmentLength(x2, y2, x3, y3) + getSegmentLength(x3, y3, x1, y1);
     }
 
-
-    public double getSegmentLength(double x1, double y1, double x2, double y2) {
+    private static double getSegmentLength(double x1, double y1, double x2, double y2) {
         return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
     }
 
