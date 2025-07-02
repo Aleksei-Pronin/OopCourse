@@ -20,7 +20,7 @@ public class Main {
         System.out.println("Первый элемент - " + list.getFirst());
         System.out.println("Элемент с индексом 3 - " + list.get(3));
 
-        System.out.println("Изменили элемент с индексом 2 на 7, старое значение - " + list.set(2, 7));
+        System.out.println("Изменили элемент с индексом 2 на 7, старое значение - " + list.set(2, 7) + ", текущий список - " + list);
         list.add(4, 9);
         System.out.println("Вставили 9 по индексу 4, текущий список - " + list);
 
