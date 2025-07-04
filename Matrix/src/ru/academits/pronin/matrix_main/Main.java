@@ -10,7 +10,7 @@ public class Main {
         Vector vector3 = new Vector(new double[]{3.0, 4.0, 7.0});
         Vector vector4 = new Vector(new double[]{2.3, 3.2, 5.0, 6.6, 7.6, 6.6});
 
-        Vector[] vectors = new Vector[]{vector1, vector2, vector3, vector4};
+        Vector[] vectors = {vector1, vector2, vector3, vector4};
 
         Matrix matrix1 = new Matrix(3, 4);
         Matrix matrix2 = new Matrix(vectors);
@@ -28,7 +28,7 @@ public class Main {
         System.out.println(matrix3.getRow(1));
         System.out.println(matrix3.getColumn(0));
 
-        matrix4.setRow(new Vector(new double[]{1.0, 2.0, 3.0}), 1);
+        matrix4.setRow(1, new Vector(new double[]{1.0, 2.0, 3.0}));
         System.out.println(matrix4);
 
         System.out.println(matrix3.getDeterminant());
@@ -36,11 +36,12 @@ public class Main {
         System.out.println(matrix2);
         System.out.println(matrix2.getRowsCount() + "" + matrix2.getColumnsCount());
 
-        System.out.println(matrix2.transpose());
+        matrix2.transpose();
+        System.out.println(matrix2);
 
         System.out.println(matrix3);
 
-        matrix3.multiplyByScalar(6);
+        matrix3.multiplyByScalar(5);
         System.out.println(matrix3);
 
         System.out.println(matrix3.multiplyByVector(new Vector(new double[]{2, 3, 4})));
