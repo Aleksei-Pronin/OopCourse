@@ -24,7 +24,6 @@ public class Main {
         System.out.println("Таблица 1 пустая - " + table1.isEmpty());
         System.out.println("Таблица 2 пустая - " + table2.isEmpty());
 
-
         System.out.println("Таблица 1 содержит 4 - " + table1.contains(4));
         System.out.println("Таблица 2 содержит 5 - " + table2.contains(5));
 
