@@ -36,7 +36,7 @@ public class Main {
         System.out.println("Таблица 1 в массив new Integer[]{1, 2, 3, 4, 5, 6, 7, 8, 9} - " + Arrays.toString(table1.toArray(new Integer[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11})));
 
         System.out.println("Удаляем элемент со значением 4, результат - " + table1.remove(4) + ", текущая таблица - " + table1);
-        System.out.println("Удаляем элемент со значением 11, результат - " + table1.remove((Integer) 11) + ", текущая таблица - " + table1);
+        System.out.println("Удаляем элемент со значением 11, результат - " + table1.remove(11) + ", текущая таблица - " + table1);
 
         table2.add(11);
         table2.add(12);
