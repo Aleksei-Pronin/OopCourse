@@ -230,7 +230,7 @@ public class ArrayList<E> implements List<E> {
             return true;
         }
 
-        if (size() < collection.size()) {
+        if (size < collection.size()) {
             return false;
         }
 
