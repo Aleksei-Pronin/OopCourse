@@ -36,7 +36,6 @@ public class Main {
         System.out.println("Первое вхождение элемента 9 имеет индекс - " + list1.indexOf(9));
         System.out.println("Последнее вхождение элемента 5 имеет индекс - " + list1.indexOf(5));
 
-
         list1.add(4, 9);
         System.out.println("Вставили 9 по индексу 4, текущий список - " + list1);
 

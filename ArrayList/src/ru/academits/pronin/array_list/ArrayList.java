@@ -13,7 +13,7 @@ public class ArrayList<E> implements List<E> {
     }
 
     public ArrayList(int capacity) {
-        if (capacity < 0) {
+        if (capacity <= 0) {
             throw new IllegalArgumentException("Вместимость должна быть больше 0, capacity = " + capacity);
         }
 
@@ -33,22 +33,12 @@ public class ArrayList<E> implements List<E> {
 
     @Override
     public boolean contains(Object o) {
-        if (o == null) {
-            throw new NullPointerException("Объект не должен быть null");
-        }
-
-        for (E item : items) {
-            if (o.equals(item)) {
-                return true;
-            }
-        }
-
-        return false;
+        return indexOf(o) != -1;
     }
 
     @Override
     public Iterator<E> iterator() {
-        return new MyListIterator();
+        return new ListIterator();
     }
 
     @Override
@@ -56,20 +46,21 @@ public class ArrayList<E> implements List<E> {
         return Arrays.copyOf(items, size);
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "SuspiciousSystemArraycopy"})
+    @Override
     public <T> T[] toArray(T[] array) {
         if (array == null) {
             throw new NullPointerException("Массив не должен быть null");
         }
 
         if (array.length < size) {
-            array = (T[]) new Object[size];
-        } else if (array.length > size) {
-            array[size] = null;
+            return (T[]) Arrays.copyOf(items, size, array.getClass());
         }
 
-        for (int i = 0; i < size; i++) {
-            array[i] = (T) items[i];
+        System.arraycopy(items, 0, array, 0, size);
+
+        if (array.length > size) {
+            array[size] = null;
         }
 
         return array;
@@ -77,22 +68,14 @@ public class ArrayList<E> implements List<E> {
 
     @Override
     public E get(int index) {
-        if (index < 0 || index >= size) {
-            throw new IndexOutOfBoundsException("Некорректный индекс: " + index);
-        }
+        checkIndex(index, size - 1);
 
         return items[index];
     }
 
     @Override
     public E set(int index, E element) {
-        if (element == null) {
-            throw new NullPointerException("Элемент не должен быть null");
-        }
-
-        if (index < 0 || index >= size) {
-            throw new IndexOutOfBoundsException("Некорректный индекс: " + index);
-        }
+        checkIndex(index, size - 1);
 
         E replacedElement = items[index];
         items[index] = element;
@@ -101,10 +84,6 @@ public class ArrayList<E> implements List<E> {
 
     @Override
     public int indexOf(Object o) {
-        if (o == null) {
-            throw new NullPointerException("Объект не должен быть null");
-        }
-
         for (int i = 0; i < size; i++) {
             if (items[i].equals(o)) {
                 return i;
@@ -116,23 +95,23 @@ public class ArrayList<E> implements List<E> {
 
     @Override
     public int lastIndexOf(Object o) {
-        if (o == null) {
-            throw new NullPointerException("Объект не должен быть null");
-        }
-
-        int index = -1;
-
-        for (int i = 0; i < size; i++) {
+        for (int i = size - 1; i >= 0; i--) {
             if (items[i].equals(o)) {
-                index = i;
+                return i;
             }
         }
 
-        return index;
+        return -1;
     }
 
     private void increaseCapacity() {
         items = Arrays.copyOf(items, items.length * 2);
+    }
+
+    private void ensureCapacity(int minCapacity) {
+        if (minCapacity > items.length) {
+            items = Arrays.copyOf(items, minCapacity);
+        }
     }
 
     public void trimToSize() {
@@ -143,28 +122,19 @@ public class ArrayList<E> implements List<E> {
 
     @Override
     public boolean add(E element) {
-        if (element == null) {
-            throw new NullPointerException("Элемент не должен быть null");
-        }
-
         if (size >= items.length) {
             increaseCapacity();
         }
 
-        items[size++] = element;
+        items[size] = element;
+        size++;
         modCount++;
         return true;
     }
 
     @Override
     public void add(int index, E element) {
-        if (element == null) {
-            throw new NullPointerException("Элемент не должен быть null");
-        }
-
-        if (index < 0 || index > size) {
-            throw new IndexOutOfBoundsException("Некорректный индекс: " + index);
-        }
+        checkIndex(index, size);
 
         if (index == size) {
             add(element);
@@ -183,31 +153,8 @@ public class ArrayList<E> implements List<E> {
     }
 
     @Override
-    public boolean remove(Object o) {
-        if (o == null) {
-            throw new NullPointerException("Объект не должен быть null");
-        }
-
-        for (int i = 0; i < size; i++) {
-            if (items[i].equals(o)) {
-                if (i < size - 1) {
-                    System.arraycopy(items, i + 1, items, i, size - i - 1);
-                }
-
-                items[--size] = null;
-                modCount++;
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    @Override
     public E remove(int index) {
-        if (index < 0 || index >= size) {
-            throw new IndexOutOfBoundsException("Некорректный индекс: " + index);
-        }
+        checkIndex(index, size - 1);
 
         E element = items[index];
 
@@ -215,9 +162,22 @@ public class ArrayList<E> implements List<E> {
             System.arraycopy(items, index + 1, items, index, size - index - 1);
         }
 
-        items[--size] = null;
+        size--;
+        items[size] = null;
         modCount++;
         return element;
+    }
+
+    @Override
+    public boolean remove(Object o) {
+        int index = indexOf(o);
+
+        if (index == -1) {
+            return false;
+        }
+
+        remove(index);
+        return true;
     }
 
     @Override
@@ -230,7 +190,7 @@ public class ArrayList<E> implements List<E> {
             return true;
         }
 
-        if (size < collection.size()) {
+        if (isEmpty() || size < collection.size()) {
             return false;
         }
 
@@ -245,26 +205,7 @@ public class ArrayList<E> implements List<E> {
 
     @Override
     public boolean addAll(Collection<? extends E> collection) {
-        if (collection == null) {
-            throw new NullPointerException("Коллекция не должна быть null");
-        }
-
-        if (collection.isEmpty()) {
-            return false;
-        }
-
-        int newCapacity = collection.size() + size;
-
-        if (newCapacity > items.length) {
-            items = Arrays.copyOf(items, newCapacity);
-        }
-
-        for (E element : collection) {
-            items[size++] = element;
-        }
-
-        modCount++;
-        return true;
+        return addAll(size, collection);
     }
 
     @Override
@@ -273,27 +214,21 @@ public class ArrayList<E> implements List<E> {
             throw new NullPointerException("Коллекция не должна быть null");
         }
 
-        if (index < 0 || index > size) {
-            throw new IndexOutOfBoundsException("Некорректный индекс: " + index);
-        }
+        checkIndex(index, size);
 
         if (collection.isEmpty()) {
             return false;
         }
 
         int newElementsCount = collection.size();
-        int newCapacity = collection.size() + size;
-
-        if (newCapacity > items.length) {
-            items = Arrays.copyOf(items, newCapacity);
-        }
-
+        ensureCapacity(newElementsCount + size);
         System.arraycopy(items, index, items, index + newElementsCount, size - index);
 
         int i = index;
 
         for (E element : collection) {
-            items[i++] = element;
+            items[i] = element;
+            i++;
         }
 
         size += newElementsCount;
@@ -329,6 +264,10 @@ public class ArrayList<E> implements List<E> {
             throw new NullPointerException("Коллекция не должна быть null");
         }
 
+        if (isEmpty()) {
+            return false;
+        }
+
         if (collection.isEmpty()) {
             clear();
             return true;
@@ -348,19 +287,23 @@ public class ArrayList<E> implements List<E> {
 
     @Override
     public void clear() {
-        Arrays.fill(items, null);
+        if (isEmpty()) {
+            return;
+        }
+
+        Arrays.fill(items, 0, size - 1, null);
         size = 0;
         modCount++;
     }
 
     @Override
-    public ListIterator<E> listIterator() {
+    public java.util.ListIterator<E> listIterator() {
         // noinspection DataFlowIssue
         return null;
     }
 
     @Override
-    public ListIterator<E> listIterator(int index) {
+    public java.util.ListIterator<E> listIterator(int index) {
         // noinspection DataFlowIssue
         return null;
     }
@@ -382,9 +325,18 @@ public class ArrayList<E> implements List<E> {
         }
 
         ArrayList<?> arrayList = (ArrayList<?>) o;
-        trimToSize();
-        arrayList.trimToSize();
-        return size == arrayList.size && Arrays.equals(items, arrayList.items);
+
+        if (size != arrayList.size) {
+            return false;
+        }
+
+        for (int i = 0; i < size; i++) {
+            if (items[i] != arrayList.items[i]) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     @Override
@@ -407,14 +359,14 @@ public class ArrayList<E> implements List<E> {
         StringBuilder stringBuilder = new StringBuilder("[");
 
         for (int i = 0; i < lastIndex; i++) {
-            stringBuilder.append(get(i)).append(", ");
+            stringBuilder.append(items[i]).append(", ");
         }
 
-        stringBuilder.append(get(lastIndex)).append(']');
+        stringBuilder.append(items[size - 1]).append(']');
         return stringBuilder.toString();
     }
 
-    private class MyListIterator implements Iterator<E> {
+    private class ListIterator implements Iterator<E> {
         private int currentIndex = -1;
         private final int expectedModCount = modCount;
 
@@ -433,7 +385,14 @@ public class ArrayList<E> implements List<E> {
                 throw new NoSuchElementException("Нет следующего элемента");
             }
 
-            return items[++currentIndex];
+            currentIndex++;
+            return items[currentIndex];
+        }
+    }
+
+    private void checkIndex(int index, int endIndex) {
+        if (index < 0 || index > endIndex) {
+            throw new IndexOutOfBoundsException("Некорректный индекс: " + index + ". Допустимы границы от 0 до " + endIndex);
         }
     }
 }
