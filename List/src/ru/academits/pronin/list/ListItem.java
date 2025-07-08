@@ -28,9 +28,4 @@ class ListItem<E> {
     public void setNext(ListItem<E> next) {
         this.next = next;
     }
-
-    @Override
-    public String toString() {
-        return data.toString();
-    }
 }
