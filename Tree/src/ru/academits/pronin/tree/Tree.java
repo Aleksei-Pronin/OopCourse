@@ -1,5 +1,7 @@
 package ru.academits.pronin.tree;
 
+import java.util.*;
+
 public class Tree<T extends Comparable<T>> {
     private TreeNode<T> root;
 
@@ -7,6 +9,10 @@ public class Tree<T extends Comparable<T>> {
     }
 
     public TreeNode<T> find(T data) {
+        if (root == null) {
+            return null;
+        }
+
         TreeNode<T> currentNode = root;
 
         while (!currentNode.getData().equals(data)) {
@@ -141,5 +147,80 @@ public class Tree<T extends Comparable<T>> {
         }
 
         return true;
+    }
+
+    public List<T> bfs() {
+        List<T> list = new ArrayList<>();
+
+        if (root == null) {
+            return list;
+        }
+
+        Queue<TreeNode<T>> queue = new LinkedList<>();
+        queue.add(root);
+
+        while (!queue.isEmpty()) {
+            TreeNode<T> node = queue.poll();
+            list.add(node.getData());
+
+            if (node.getLeft() != null) {
+                queue.add(node.getLeft());
+            }
+
+            if (node.getRight() != null) {
+                queue.add(node.getRight());
+            }
+        }
+
+        return list;
+    }
+
+    public List<T> dfsRecursive() {
+        List<T> list = new ArrayList<>();
+
+        if (root == null) {
+            return list;
+        }
+
+        TreeNode<T> node = root;
+        visit(node, list);
+        return list;
+    }
+
+    private void visit(TreeNode<T> node, List<T> list) {
+        if (node == null) {
+            return;
+        }
+
+        list.add(node.getData());
+
+        visit(node.getLeft(), list);
+        visit(node.getRight(), list);
+    }
+
+    public List<T> dfs() {
+        List<T> list = new ArrayList<>();
+
+        if (root == null) {
+            return list;
+        }
+
+        Deque<TreeNode<T>> stack = new LinkedList<>();
+        stack.addLast(root);
+
+        while (!stack.isEmpty()) {
+            TreeNode<T> node = stack.removeLast();
+            list.add(node.getData());
+
+            if (node.getRight() != null) {
+                stack.addLast(node.getRight());
+            }
+
+            if (node.getLeft() != null) {
+                stack.addLast(node.getLeft());
+            }
+        }
+
+        return list;
     }
 }

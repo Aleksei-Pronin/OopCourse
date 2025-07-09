@@ -35,4 +35,9 @@ public class TreeNode<T> {
     public void setData(T data) {
         this.data = data;
     }
+
+    @Override
+    public String toString() {
+        return "[" + data + "]";
+    }
 }

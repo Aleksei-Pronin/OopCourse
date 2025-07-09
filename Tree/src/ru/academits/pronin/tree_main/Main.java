@@ -20,6 +20,19 @@ public class Main {
         tree.insert(25);
         tree.insert(18);
 
+        System.out.println((tree.bfs()));
+
         System.out.println(tree);
+        System.out.println(tree.find(14));
+
+        System.out.println(tree.remove(14));
+        System.out.println((tree.bfs()));
+        System.out.println(tree.find(14));
+
+        System.out.println(tree.find(20));
+        tree.insert(14);
+        System.out.println(tree.bfs());
+        System.out.println(tree.dfsRecursive());
+        System.out.println(tree.dfs());
     }
 }
