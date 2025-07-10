@@ -76,6 +76,7 @@ public class Tree<T extends Comparable<T>> {
 
         while (!currentNode.getData().equals(data)) {
             parentNode = currentNode;
+
             if (data.compareTo(currentNode.getData()) < 0) {
                 if (currentNode.getLeft() != null) {
                     currentNode = currentNode.getLeft();
@@ -93,7 +94,7 @@ public class Tree<T extends Comparable<T>> {
         }
 
         if (currentNode.getLeft() == null && currentNode.getRight() == null) {
-            if (currentNode == root) {
+            if (parentNode == null) {
                 root = null;
             } else if (isLeftChild) {
                 parentNode.setLeft(null);
@@ -101,7 +102,7 @@ public class Tree<T extends Comparable<T>> {
                 parentNode.setRight(null);
             }
         } else if (currentNode.getLeft() == null) {
-            if (currentNode == root) {
+            if (parentNode == null) {
                 root = currentNode.getRight();
             } else if (isLeftChild) {
                 parentNode.setLeft(currentNode.getRight());
@@ -109,7 +110,7 @@ public class Tree<T extends Comparable<T>> {
                 parentNode.setRight(currentNode.getRight());
             }
         } else if (currentNode.getRight() == null) {
-            if (currentNode == root) {
+            if (parentNode == null) {
                 root = currentNode.getLeft();
             } else if (isLeftChild) {
                 parentNode.setLeft(currentNode.getLeft());
@@ -137,7 +138,7 @@ public class Tree<T extends Comparable<T>> {
                 successorNode.setRight(currentNode.getRight());
             }
 
-            if (currentNode == root) {
+            if (parentNode == null) {
                 root = successorNode;
             } else if (isLeftChild) {
                 parentNode.setLeft(successorNode);
@@ -149,7 +150,7 @@ public class Tree<T extends Comparable<T>> {
         return true;
     }
 
-    public List<T> bfs() {
+    public List<T> traverseTreeInBreadth() {
         List<T> list = new ArrayList<>();
 
         if (root == null) {
@@ -175,7 +176,7 @@ public class Tree<T extends Comparable<T>> {
         return list;
     }
 
-    public List<T> dfsRecursive() {
+    public List<T> traverseTreeInDeepRecursive() {
         List<T> list = new ArrayList<>();
 
         if (root == null) {
@@ -198,7 +199,7 @@ public class Tree<T extends Comparable<T>> {
         visit(node.getRight(), list);
     }
 
-    public List<T> dfs() {
+    public List<T> traverseTreeInDeep() {
         List<T> list = new ArrayList<>();
 
         if (root == null) {
