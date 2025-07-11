@@ -1,24 +1,31 @@
 package ru.academits.pronin.main;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class ArrayListHome {
     public static void main(String[] args) {
-        ArrayList<String> list = new ArrayList<>();
+        ArrayList<String> linesList = new ArrayList<>();
 
-        try (Scanner scanner = new Scanner(new FileInputStream("text.txt"))) {
-            while (scanner.hasNextLine()) {
-                list.add(scanner.nextLine());
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader("text.txt"))) {
+            String line;
+
+            while ((line = bufferedReader.readLine()) != null) {
+                linesList.add(line);
             }
+        } catch (FileNotFoundException e) {
+            System.err.println("Файл не найден.");
         } catch (IOException e) {
-            throw new RuntimeException("Ошибка чтения файла.");
+            System.err.println("Ошибка чтения файла.");
         }
 
-        System.out.println(list);
+        System.out.println(linesList);
 
         ArrayList<Integer> integerList = new ArrayList<>();
+
         for (int i = 0; i < 10; i++) {
             integerList.add(i);
             integerList.add(i);
@@ -38,15 +45,15 @@ public class ArrayListHome {
             integerList.add(i);
         }
 
-        ArrayList<Integer> integerList2 = new ArrayList<>();
+        ArrayList<Integer> distinctIntegerList = new ArrayList<>(integerList.size());
 
         for (Integer element : integerList) {
-            if (!integerList2.contains(element)) {
-                integerList2.add(element);
+            if (!distinctIntegerList.contains(element)) {
+                distinctIntegerList.add(element);
             }
         }
 
         System.out.println(integerList);
-        System.out.println(integerList2);
+        System.out.println(distinctIntegerList);
     }
 }
