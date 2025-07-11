@@ -1,6 +1,7 @@
 package ru.academits.pronin.list;
 
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 public class SinglyLinkedList<E> {
     private ListItem<E> head;
@@ -69,7 +70,7 @@ public class SinglyLinkedList<E> {
         }
 
         for (ListItem<E> currentItem = head, previousItem = null; currentItem != null; previousItem = currentItem, currentItem = currentItem.getNext()) {
-            if (data != null && data.equals(currentItem.getData()) || data == null && currentItem.getData() == null) {
+            if (Objects.equals(data, currentItem.getData())) {
                 if (previousItem == null) {
                     head = head.getNext();
                 } else {
