@@ -1,4 +1,4 @@
-package ru.academits.pronin.main;
+package ru.academits.pronin.array_list_home;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
