@@ -44,10 +44,6 @@ public class Matrix {
                 throw new NullPointerException("Строки в матрице не должны быть null");
             }
 
-            if (row.length == 0) {
-                throw new IllegalArgumentException("Размер строки матрицы должен быть больше 0");
-            }
-
             columnsCount = Math.max(columnsCount, row.length);
         }
 
@@ -56,6 +52,10 @@ public class Matrix {
 
         for (int i = 0; i < rowsCount; i++) {
             rows[i] = new Vector(columnsCount, matrix[i]);
+        }
+
+        if (getColumnsCount() == 0) {
+            throw new NullPointerException("В матрице должен быть минимум один столбец");
         }
     }
 
@@ -151,7 +151,7 @@ public class Matrix {
 
     public double getDeterminant() {
         if (rows.length != getColumnsCount()) {
-            throw new RuntimeException("Матрица должна быть квадратной, текущие размеры: " + getDimensions());
+            throw new IllegalStateException("Матрица должна быть квадратной, текущие размеры: " + getDimensions());
         }
 
         int matrixSize = rows.length;
@@ -279,15 +279,12 @@ public class Matrix {
         int matrix2ColumnsCount = matrix2.getColumnsCount();
         Matrix result = new Matrix(matrix1RowsCount, matrix2ColumnsCount);
 
-        matrix2.transpose();
-
         for (int i = 0; i < matrix1RowsCount; i++) {
             for (int j = 0; j < matrix2ColumnsCount; j++) {
-                result.rows[i].setCoordinate(j, Vector.getScalarProduct(matrix1.rows[i], matrix2.rows[j]));
+                result.rows[i].setCoordinate(j, Vector.getScalarProduct(matrix1.rows[i], matrix2.getColumn(j)));
             }
         }
 
-        matrix2.transpose();
         return result;
     }
 
@@ -302,6 +299,11 @@ public class Matrix {
         }
 
         Matrix matrix = (Matrix) o;
+
+        if (getColumnsCount() != matrix.getColumnsCount()) {
+            return false;
+        }
+
         return Arrays.equals(rows, matrix.rows);
     }
 
