@@ -47,15 +47,15 @@ public class Matrix {
             columnsCount = Math.max(columnsCount, row.length);
         }
 
+        if (columnsCount == 0) {
+            throw new NullPointerException("В матрице должен быть минимум один столбец");
+        }
+
         int rowsCount = matrix.length;
         rows = new Vector[rowsCount];
 
         for (int i = 0; i < rowsCount; i++) {
             rows[i] = new Vector(columnsCount, matrix[i]);
-        }
-
-        if (getColumnsCount() == 0) {
-            throw new NullPointerException("В матрице должен быть минимум один столбец");
         }
     }
 
