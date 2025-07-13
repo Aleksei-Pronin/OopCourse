@@ -13,8 +13,8 @@ public class ArrayList<E> implements List<E> {
     }
 
     public ArrayList(int capacity) {
-        if (capacity <= 0) {
-            throw new IllegalArgumentException("Вместимость должна быть больше 0, capacity = " + capacity);
+        if (capacity < 0) {
+            throw new IllegalArgumentException("Вместимость должна быть больше либо равна 0, capacity = " + capacity);
         }
 
         // noinspection unchecked
@@ -38,7 +38,7 @@ public class ArrayList<E> implements List<E> {
 
     @Override
     public Iterator<E> iterator() {
-        return new ListIterator();
+        return new ArrayListIterator();
     }
 
     @Override
@@ -84,9 +84,17 @@ public class ArrayList<E> implements List<E> {
 
     @Override
     public int indexOf(Object o) {
-        for (int i = 0; i < size; i++) {
-            if (items[i].equals(o)) {
-                return i;
+        if (o == null) {
+            for (int i = 0; i < size; i++) {
+                if (items[i] == null) {
+                    return i;
+                }
+            }
+        } else {
+            for (int i = 0; i < size; i++) {
+                if (o.equals(items[i])) {
+                    return i;
+                }
             }
         }
 
@@ -95,9 +103,17 @@ public class ArrayList<E> implements List<E> {
 
     @Override
     public int lastIndexOf(Object o) {
-        for (int i = size - 1; i >= 0; i--) {
-            if (items[i].equals(o)) {
-                return i;
+        if (o == null) {
+            for (int i = size - 1; i >= 0; i--) {
+                if (items[i] == null) {
+                    return i;
+                }
+            }
+        } else {
+            for (int i = size - 1; i >= 0; i--) {
+                if (o.equals(items[i])) {
+                    return i;
+                }
             }
         }
 
@@ -105,10 +121,11 @@ public class ArrayList<E> implements List<E> {
     }
 
     private void increaseCapacity() {
-        items = Arrays.copyOf(items, items.length * 2);
+        int newCapacity = (items.length == 0) ? 1 : items.length * 2;
+        items = Arrays.copyOf(items, newCapacity);
     }
 
-    private void ensureCapacity(int minCapacity) {
+    public void ensureCapacity(int minCapacity) {
         if (minCapacity > items.length) {
             items = Arrays.copyOf(items, minCapacity);
         }
@@ -162,8 +179,8 @@ public class ArrayList<E> implements List<E> {
             System.arraycopy(items, index + 1, items, index, size - index - 1);
         }
 
-        size--;
         items[size] = null;
+        size--;
         modCount++;
         return element;
     }
@@ -291,19 +308,19 @@ public class ArrayList<E> implements List<E> {
             return;
         }
 
-        Arrays.fill(items, 0, size - 1, null);
+        Arrays.fill(items, 0, size, null);
         size = 0;
         modCount++;
     }
 
     @Override
-    public java.util.ListIterator<E> listIterator() {
+    public ListIterator<E> listIterator() {
         // noinspection DataFlowIssue
         return null;
     }
 
     @Override
-    public java.util.ListIterator<E> listIterator(int index) {
+    public ListIterator<E> listIterator(int index) {
         // noinspection DataFlowIssue
         return null;
     }
@@ -331,7 +348,7 @@ public class ArrayList<E> implements List<E> {
         }
 
         for (int i = 0; i < size; i++) {
-            if (items[i] != arrayList.items[i]) {
+            if (!items[i].equals(arrayList.items[i])) {
                 return false;
             }
         }
@@ -344,7 +361,7 @@ public class ArrayList<E> implements List<E> {
         final int prime = 37;
         int hash = 1;
         hash = prime * hash + size;
-        hash = prime * hash + Arrays.hashCode(items);
+        hash = prime * hash + Arrays.hashCode(Arrays.copyOf(items, size));
         return hash;
     }
 
@@ -366,7 +383,7 @@ public class ArrayList<E> implements List<E> {
         return stringBuilder.toString();
     }
 
-    private class ListIterator implements Iterator<E> {
+    private class ArrayListIterator implements Iterator<E> {
         private int currentIndex = -1;
         private final int expectedModCount = modCount;
 
