@@ -3,16 +3,16 @@ package ru.academits.pronin.tree;
 import java.util.*;
 import java.util.function.Consumer;
 
-public class binarySearchTree<E> {
+public class BinarySearchTree<E> {
     private final Comparator<E> comparator;
     private TreeNode<E> root;
     private int size;
 
-    public binarySearchTree() {
+    public BinarySearchTree() {
         comparator = null;
     }
 
-    public binarySearchTree(Comparator<E> comparator) {
+    public BinarySearchTree(Comparator<E> comparator) {
         this.comparator = comparator;
     }
 

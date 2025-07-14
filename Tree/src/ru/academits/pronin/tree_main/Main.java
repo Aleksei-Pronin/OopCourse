@@ -1,10 +1,10 @@
 package ru.academits.pronin.tree_main;
 
-import ru.academits.pronin.tree.binarySearchTree;
+import ru.academits.pronin.tree.BinarySearchTree;
 
 public class Main {
     public static void main(String[] args) {
-        binarySearchTree<Integer> tree = new binarySearchTree<>();
+        BinarySearchTree<Integer> tree = new BinarySearchTree<>();
 
         tree.insert(8);
         tree.insert(3);
@@ -60,7 +60,7 @@ public class Main {
         tree.traverseTreeInDeep(data -> System.out.print(data + " "));
         System.out.println();
 
-        binarySearchTree<Integer> reverseTree = new binarySearchTree<>((n1, n2) -> n2.compareTo(n1));
+        BinarySearchTree<Integer> reverseTree = new BinarySearchTree<>((n1, n2) -> n2.compareTo(n1));
 
         reverseTree.insert(8);
         reverseTree.insert(3);
