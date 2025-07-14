@@ -7,10 +7,14 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        convertCsvToHtml(args[0], args[1]);
+        try {
+            convertCsvToHtml(args[0], args[1]);
+        } catch (FileNotFoundException e) {
+            System.err.println("Файл не найден.");
+        }
     }
 
-    public static void convertCsvToHtml(String inputFilePath, String outputFilePath) {
+    public static void convertCsvToHtml(String inputFilePath, String outputFilePath) throws FileNotFoundException {
         try (Scanner scanner = new Scanner(new FileInputStream(inputFilePath));
              PrintWriter writer = new PrintWriter(outputFilePath)) {
             writer.println("<!DOCTYPE html>");
@@ -67,8 +71,6 @@ public class Main {
             writer.println("\t\t</table>");
             writer.println("\t</body>");
             writer.print("</html>");
-        } catch (FileNotFoundException e) {
-            System.err.println("Файл не найден.");
         }
     }
 }

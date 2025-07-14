@@ -84,17 +84,9 @@ public class ArrayList<E> implements List<E> {
 
     @Override
     public int indexOf(Object o) {
-        if (o == null) {
-            for (int i = 0; i < size; i++) {
-                if (items[i] == null) {
-                    return i;
-                }
-            }
-        } else {
-            for (int i = 0; i < size; i++) {
-                if (o.equals(items[i])) {
-                    return i;
-                }
+        for (int i = 0; i < size; i++) {
+            if (Objects.equals(o, items[i])) {
+                return i;
             }
         }
 
@@ -103,17 +95,9 @@ public class ArrayList<E> implements List<E> {
 
     @Override
     public int lastIndexOf(Object o) {
-        if (o == null) {
-            for (int i = size - 1; i >= 0; i--) {
-                if (items[i] == null) {
-                    return i;
-                }
-            }
-        } else {
-            for (int i = size - 1; i >= 0; i--) {
-                if (o.equals(items[i])) {
-                    return i;
-                }
+        for (int i = size - 1; i >= 0; i--) {
+            if (Objects.equals(o, items[i])) {
+                return i;
             }
         }
 
@@ -348,7 +332,7 @@ public class ArrayList<E> implements List<E> {
         }
 
         for (int i = 0; i < size; i++) {
-            if (!items[i].equals(arrayList.items[i])) {
+            if (!Objects.equals(items[i], arrayList.items[i])) {
                 return false;
             }
         }
@@ -361,7 +345,11 @@ public class ArrayList<E> implements List<E> {
         final int prime = 37;
         int hash = 1;
         hash = prime * hash + size;
-        hash = prime * hash + Arrays.hashCode(Arrays.copyOf(items, size));
+
+        for (int i = 0; i < size; i++) {
+            hash = prime * hash + Objects.hashCode(items[i]);
+        }
+
         return hash;
     }
 
