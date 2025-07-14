@@ -1,21 +1,25 @@
 package ru.academits.pronin.csv;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import java.util.Scanner;
+import java.io.*;
 
 public class Main {
     public static void main(String[] args) {
+        if (args.length != 2) {
+            System.err.println("Требуется 2 аргумента - входной CSV и выходной HTML файлы.");
+            return;
+        }
+
         try {
             convertCsvToHtml(args[0], args[1]);
         } catch (FileNotFoundException e) {
             System.err.println("Файл не найден.");
+        } catch (IOException e) {
+            System.err.println("Ошибка при обработке файла.");
         }
     }
 
-    public static void convertCsvToHtml(String inputFilePath, String outputFilePath) throws FileNotFoundException {
-        try (Scanner scanner = new Scanner(new FileInputStream(inputFilePath));
+    public static void convertCsvToHtml(String inputFilePath, String outputFilePath) throws IOException {
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(inputFilePath));
              PrintWriter writer = new PrintWriter(outputFilePath)) {
             writer.println("<!DOCTYPE html>");
             writer.println("<html lang=\"ru\">");
@@ -28,9 +32,9 @@ public class Main {
 
             boolean areQuotesOpened = false;
 
-            while (scanner.hasNextLine()) {
-                String line = scanner.nextLine();
+            String line;
 
+            while ((line = bufferedReader.readLine()) != null) {
                 if (!areQuotesOpened) {
                     writer.println("\t\t\t<tr>");
                     writer.print("\t\t\t\t<td>");
