@@ -17,6 +17,18 @@ public class binarySearchTree<E> {
     }
 
     private int compare(E data1, E data2) {
+        if (data1 == null && data2 == null) {
+            return 0;
+        }
+
+        if (data1 == null) {
+            return -1;
+        }
+
+        if (data2 == null) {
+            return 1;
+        }
+
         if (comparator != null) {
             return comparator.compare(data1, data2);
         } else {
@@ -214,5 +226,19 @@ public class binarySearchTree<E> {
         } else {
             parentNode.setRight(newNode);
         }
+    }
+
+    @Override
+    public String toString() {
+        if (root == null) {
+            return "[]";
+        }
+
+        StringBuilder stringBuilder = new StringBuilder("[");
+
+        traverseTreeInBreadth(data -> stringBuilder.append(data).append(", "));
+        stringBuilder.delete(stringBuilder.length() - 2, stringBuilder.length());
+        stringBuilder.append(']');
+        return stringBuilder.toString();
     }
 }

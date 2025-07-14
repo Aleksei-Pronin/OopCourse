@@ -19,7 +19,10 @@ public class Main {
         tree.insert(17);
         tree.insert(25);
         tree.insert(18);
+        tree.insert(null);
+        tree.insert(8);
 
+        System.out.println(tree);
         System.out.println("Количество элементов - " + tree.getSize());
 
         System.out.println("Обход в ширину:");
@@ -72,6 +75,8 @@ public class Main {
         reverseTree.insert(17);
         reverseTree.insert(25);
         reverseTree.insert(18);
+        reverseTree.insert(null);
+        reverseTree.insert(8);
 
         System.out.println("Обход в ширину:");
         reverseTree.traverseTreeInBreadth(data -> System.out.print(data + " "));
