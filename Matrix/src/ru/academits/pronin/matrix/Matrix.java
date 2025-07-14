@@ -48,7 +48,7 @@ public class Matrix {
         }
 
         if (columnsCount == 0) {
-            throw new NullPointerException("В матрице должен быть минимум один столбец");
+            throw new IllegalArgumentException("В матрице должен быть минимум один столбец");
         }
 
         int rowsCount = matrix.length;
