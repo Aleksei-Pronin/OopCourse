@@ -179,7 +179,7 @@ public class ArrayList<E> implements List<E> {
             System.arraycopy(items, index + 1, items, index, size - index - 1);
         }
 
-        items[size] = null;
+        items[size - 1] = null;
         size--;
         modCount++;
         return element;
@@ -207,7 +207,7 @@ public class ArrayList<E> implements List<E> {
             return true;
         }
 
-        if (isEmpty() || size < collection.size()) {
+        if (isEmpty()) {
             return false;
         }
 
