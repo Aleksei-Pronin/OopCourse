@@ -62,15 +62,15 @@ public class HashTable<E> implements Collection<E> {
             throw new NullPointerException("Массив не должен быть null");
         }
 
-        Object[] hashTableToArray = toArray();
+        Object[] elements = toArray();
 
         if (a.length < size) {
             // noinspection unchecked
-            a = (T[]) Arrays.copyOf(hashTableToArray, size, a.getClass());
+            return (T[]) Arrays.copyOf(elements, size, a.getClass());
         }
 
         // noinspection SuspiciousSystemArraycopy
-        System.arraycopy(hashTableToArray, 0, a, 0, size);
+        System.arraycopy(elements, 0, a, 0, size);
 
         if (a.length > size) {
             a[size] = null;
@@ -121,7 +121,7 @@ public class HashTable<E> implements Collection<E> {
             return true;
         }
 
-        if (isEmpty() || size < c.size()) {
+        if (isEmpty()) {
             return false;
         }
 
@@ -187,6 +187,10 @@ public class HashTable<E> implements Collection<E> {
             throw new NullPointerException("Коллекция не должна быть null");
         }
 
+        if (isEmpty()) {
+            return false;
+        }
+
         if (c.isEmpty()) {
             clear();
             return true;
@@ -228,8 +232,8 @@ public class HashTable<E> implements Collection<E> {
         modCount++;
     }
 
-    public int getIndex(Object o) {
-        return Math.abs(o.hashCode() % buckets.length);
+    private int getIndex(Object o) {
+        return (o == null) ? 0 : Math.abs(o.hashCode() % buckets.length);
     }
 
     @Override
