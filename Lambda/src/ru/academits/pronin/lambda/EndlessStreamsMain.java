@@ -3,6 +3,7 @@ package ru.academits.pronin.lambda;
 import java.util.Scanner;
 import java.util.stream.DoubleStream;
 import java.util.stream.LongStream;
+import java.util.stream.Stream;
 
 public class EndlessStreamsMain {
     public static void main(String[] args) {
@@ -25,5 +26,26 @@ public class EndlessStreamsMain {
                 .map(n -> (long) ((Math.pow((1 + Math.sqrt(5)) / 2, n) - Math.pow((1 - Math.sqrt(5)) / 2, n)) / Math.sqrt(5)))
                 .limit(fibonacciNumbersCount)
                 .forEach(System.out::println);
+
+        System.out.println("Первые " + fibonacciNumbersCount + " чисел Фибоначчи:");
+        Stream.iterate(new FibonacciNumber(0, 1), fibonacciNumber -> {
+                    long temp = fibonacciNumber.nextValue;
+                    fibonacciNumber.nextValue += fibonacciNumber.value;
+                    fibonacciNumber.value = temp;
+                    return fibonacciNumber;
+                })
+                .mapToLong(fibonacciNumber -> fibonacciNumber.value)
+                .limit(fibonacciNumbersCount)
+                .forEach(System.out::println);
+    }
+
+    private static class FibonacciNumber {
+        private long value;
+        private long nextValue;
+
+        public FibonacciNumber(long value, long nextValue) {
+            this.value = value;
+            this.nextValue = nextValue;
+        }
     }
 }

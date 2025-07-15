@@ -17,6 +17,10 @@ public class BinarySearchTree<E> {
     }
 
     private int compare(E data1, E data2) {
+        if (comparator != null) {
+            return comparator.compare(data1, data2);
+        }
+
         if (data1 == null && data2 == null) {
             return 0;
         }
@@ -27,10 +31,6 @@ public class BinarySearchTree<E> {
 
         if (data2 == null) {
             return 1;
-        }
-
-        if (comparator != null) {
-            return comparator.compare(data1, data2);
         }
 
         // noinspection unchecked
@@ -136,17 +136,12 @@ public class BinarySearchTree<E> {
                 successorNode = successorNode.getLeft();
             }
 
-            if (successorParentNode == currentNode) {
-                successorParentNode.setRight(successorParentNode.getRight());
-            } else {
+            if (successorParentNode != currentNode) {
                 successorParentNode.setLeft(successorNode.getRight());
+                successorNode.setRight(currentNode.getRight());
             }
 
             successorNode.setLeft(currentNode.getLeft());
-
-            if (currentNode.getRight() != successorNode) {
-                successorNode.setRight(currentNode.getRight());
-            }
 
             replaceNode(parentNode, successorNode, isLeftChild);
         }
