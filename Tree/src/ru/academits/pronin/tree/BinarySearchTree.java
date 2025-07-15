@@ -31,22 +31,18 @@ public class BinarySearchTree<E> {
 
         if (comparator != null) {
             return comparator.compare(data1, data2);
-        } else {
-            if (data1 instanceof Comparable<?> && data2 instanceof Comparable<?>) {
-                // noinspection unchecked
-                Comparable<E> comparableData1 = (Comparable<E>) data1;
-                return comparableData1.compareTo(data2);
-            } else {
-                throw new IllegalStateException("Компаратор не задан");
-            }
         }
+
+        // noinspection unchecked
+        Comparable<E> comparableData1 = (Comparable<E>) data1;
+        return comparableData1.compareTo(data2);
     }
 
     public int getSize() {
         return size;
     }
 
-    public boolean find(E data) {
+    public boolean contains(E data) {
         if (root == null) {
             return false;
         }
@@ -105,12 +101,12 @@ public class BinarySearchTree<E> {
         TreeNode<E> parentNode = null;
         boolean isLeftChild = false;
 
-        int comparedResult = compare(data, currentNode.getData());
+        int comparisonResult = compare(data, currentNode.getData());
 
-        while (comparedResult != 0) {
+        while (comparisonResult != 0) {
             parentNode = currentNode;
 
-            if (comparedResult < 0) {
+            if (comparisonResult < 0) {
                 if (currentNode.getLeft() != null) {
                     currentNode = currentNode.getLeft();
                     isLeftChild = true;
@@ -125,7 +121,7 @@ public class BinarySearchTree<E> {
                 }
             }
 
-            comparedResult = compare(data, currentNode.getData());
+            comparisonResult = compare(data, currentNode.getData());
         }
 
         if (currentNode.getLeft() == null || currentNode.getRight() == null) {
@@ -140,7 +136,12 @@ public class BinarySearchTree<E> {
                 successorNode = successorNode.getLeft();
             }
 
-            successorParentNode.setLeft(successorNode.getRight());
+            if (successorParentNode == currentNode) {
+                successorParentNode.setRight(successorParentNode.getRight());
+            } else {
+                successorParentNode.setLeft(successorNode.getRight());
+            }
+
             successorNode.setLeft(currentNode.getLeft());
 
             if (currentNode.getRight() != successorNode) {
@@ -181,19 +182,18 @@ public class BinarySearchTree<E> {
             return;
         }
 
-        TreeNode<E> node = root;
-        visit(node, action);
+        traverseTreeInDeepRecursive(root, action);
     }
 
-    private void visit(TreeNode<E> node, Consumer<E> action) {
+    private void traverseTreeInDeepRecursive(TreeNode<E> node, Consumer<E> action) {
         if (node == null) {
             return;
         }
 
         action.accept(node.getData());
 
-        visit(node.getLeft(), action);
-        visit(node.getRight(), action);
+        traverseTreeInDeepRecursive(node.getLeft(), action);
+        traverseTreeInDeepRecursive(node.getRight(), action);
     }
 
     public void traverseTreeInDeep(Consumer<E> action) {

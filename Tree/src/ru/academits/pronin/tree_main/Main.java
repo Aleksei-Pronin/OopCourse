@@ -35,11 +35,11 @@ public class Main {
         tree.traverseTreeInDeepRecursive(data -> System.out.print(data + " "));
         System.out.println();
 
-        System.out.println("Ищем элемент 14 - " + tree.find(14));
+        System.out.println("Ищем элемент 14 - " + tree.contains(14));
         System.out.println("Удаляем элемент 14 - " + tree.remove(14));
         System.out.println("Количество элементов - " + tree.getSize());
 
-        System.out.println("Ищем элемент 14 - " + tree.find(14));
+        System.out.println("Ищем элемент 14 - " + tree.contains(14));
         System.out.println("Удаляем элемент 14 - " + tree.remove(14));
 
         System.out.println("Обход в ширину:");
