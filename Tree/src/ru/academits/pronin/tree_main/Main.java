@@ -60,7 +60,21 @@ public class Main {
         tree.traverseTreeInDeep(data -> System.out.print(data + " "));
         System.out.println();
 
-        BinarySearchTree<Integer> reverseTree = new BinarySearchTree<>((n1, n2) -> n2.compareTo(n1));
+        BinarySearchTree<Integer> reverseTree = new BinarySearchTree<>((n1, n2) -> {
+            if (n1 == null && n2 == null) {
+                return 0;
+            }
+
+            if (n1 == null) {
+                return -1;
+            }
+
+            if (n2 == null) {
+                return 1;
+            }
+
+            return n2.compareTo(n1);
+        });
 
         reverseTree.insert(8);
         reverseTree.insert(3);
@@ -77,6 +91,8 @@ public class Main {
         reverseTree.insert(18);
         reverseTree.insert(null);
         reverseTree.insert(8);
+
+        System.out.println(reverseTree);
 
         System.out.println("Обход в ширину:");
         reverseTree.traverseTreeInBreadth(data -> System.out.print(data + " "));
