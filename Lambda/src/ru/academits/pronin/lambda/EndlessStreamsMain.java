@@ -1,8 +1,8 @@
 package ru.academits.pronin.lambda;
 
+// import java.awt.*;
 import java.util.Scanner;
 import java.util.stream.DoubleStream;
-import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
 public class EndlessStreamsMain {
@@ -22,30 +22,24 @@ public class EndlessStreamsMain {
         int fibonacciNumbersCount = scanner.nextInt();
 
         System.out.println("Первые " + fibonacciNumbersCount + " чисел Фибоначчи:");
-        LongStream.iterate(0, n -> n + 1)
-                .map(n -> (long) ((Math.pow((1 + Math.sqrt(5)) / 2, n) - Math.pow((1 - Math.sqrt(5)) / 2, n)) / Math.sqrt(5)))
-                .limit(fibonacciNumbersCount)
-                .forEach(System.out::println);
-
-        System.out.println("Первые " + fibonacciNumbersCount + " чисел Фибоначчи:");
-        Stream.iterate(new FibonacciNumber(0, 1), fibonacciNumber -> {
-                    long temp = fibonacciNumber.nextValue;
-                    fibonacciNumber.nextValue += fibonacciNumber.value;
-                    fibonacciNumber.value = temp;
+        Stream.iterate(new long[]{0, 1}, fibonacciNumber -> {
+                    long temp = fibonacciNumber[1];
+                    fibonacciNumber[1] += fibonacciNumber[0];
+                    fibonacciNumber[0] = temp;
                     return fibonacciNumber;
                 })
-                .mapToLong(fibonacciNumber -> fibonacciNumber.value)
+                .mapToLong(fibonacciNumber -> fibonacciNumber[0])
                 .limit(fibonacciNumbersCount)
                 .forEach(System.out::println);
-    }
 
-    private static class FibonacciNumber {
-        private long value;
-        private long nextValue;
-
-        public FibonacciNumber(long value, long nextValue) {
-            this.value = value;
-            this.nextValue = nextValue;
-        }
+//        Stream.iterate(new Point(0, 1), point -> {
+//                    int temp = point.y;
+//                    point.y += point.x;
+//                    point.x = temp;
+//                    return point;
+//                })
+//                .mapToLong(point -> point.x)
+//                .limit(fibonacciNumbersCount)
+//                .forEach(System.out::println);
     }
 }

@@ -26,23 +26,24 @@ public class Main {
                 .collect(Collectors.joining(", ", "Имена: ", "."));
         System.out.println(uniqueNames);
 
-        OptionalDouble averageAge = persons.stream()
+        OptionalDouble personsUnder18AverageAge = persons.stream()
                 .filter(person -> person.getAge() < 18)
                 .mapToInt(Person::getAge)
                 .average();
 
-        if (averageAge.isPresent()) {
-            System.out.println("Средний возраст людей, младше 18 - " + averageAge.getAsDouble());
+        if (personsUnder18AverageAge.isPresent()) {
+            System.out.println("Средний возраст людей, младше 18 - " + personsUnder18AverageAge.getAsDouble());
         } else {
             System.out.println("Нет людей младше 18");
         }
 
-        Map<String, Double> averageAgeByName = persons.stream()
+        Map<String, Double> averageAgesByName = persons.stream()
                 .collect(Collectors.groupingBy(Person::getName, Collectors.averagingInt(Person::getAge)));
-        System.out.println(averageAgeByName);
+        System.out.println(averageAgesByName);
 
         persons.stream()
-                .filter(person -> person.getAge() >= 20 && person.getAge() <= 45).sorted((p1, p2) -> p2.getAge() - p1.getAge())
+                .filter(person -> person.getAge() >= 20 && person.getAge() <= 45)
+                .sorted((p1, p2) -> p2.getAge() - p1.getAge())
                 .map(Person::getName)
                 .forEach(System.out::println);
     }
