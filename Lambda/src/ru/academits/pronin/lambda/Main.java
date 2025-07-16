@@ -37,9 +37,9 @@ public class Main {
             System.out.println("Нет людей младше 18");
         }
 
-        Map<String, Double> averageAgesByName = persons.stream()
+        Map<String, Double> averageAgesByNames = persons.stream()
                 .collect(Collectors.groupingBy(Person::getName, Collectors.averagingInt(Person::getAge)));
-        System.out.println(averageAgesByName);
+        System.out.println(averageAgesByNames);
 
         persons.stream()
                 .filter(person -> person.getAge() >= 20 && person.getAge() <= 45)
