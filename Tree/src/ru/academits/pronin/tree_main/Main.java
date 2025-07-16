@@ -66,11 +66,11 @@ public class Main {
             }
 
             if (n1 == null) {
-                return -1;
+                return 1;
             }
 
             if (n2 == null) {
-                return 1;
+                return -1;
             }
 
             return n2.compareTo(n1);
