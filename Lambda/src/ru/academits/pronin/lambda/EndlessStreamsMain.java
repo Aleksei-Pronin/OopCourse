@@ -1,6 +1,7 @@
 package ru.academits.pronin.lambda;
 
 // import java.awt.*;
+
 import java.util.Scanner;
 import java.util.stream.DoubleStream;
 import java.util.stream.Stream;
@@ -22,24 +23,14 @@ public class EndlessStreamsMain {
         int fibonacciNumbersCount = scanner.nextInt();
 
         System.out.println("Первые " + fibonacciNumbersCount + " чисел Фибоначчи:");
-        Stream.iterate(new long[]{0, 1}, fibonacciNumber -> {
-                    long temp = fibonacciNumber[1];
-                    fibonacciNumber[1] += fibonacciNumber[0];
-                    fibonacciNumber[0] = temp;
-                    return fibonacciNumber;
+        Stream.iterate(new long[]{0, 1}, fibonacciNumbers -> {
+                    long temp = fibonacciNumbers[1];
+                    fibonacciNumbers[1] += fibonacciNumbers[0];
+                    fibonacciNumbers[0] = temp;
+                    return fibonacciNumbers;
                 })
-                .mapToLong(fibonacciNumber -> fibonacciNumber[0])
+                .mapToLong(fibonacciNumbers -> fibonacciNumbers[0])
                 .limit(fibonacciNumbersCount)
                 .forEach(System.out::println);
-
-//        Stream.iterate(new Point(0, 1), point -> {
-//                    int temp = point.y;
-//                    point.y += point.x;
-//                    point.x = temp;
-//                    return point;
-//                })
-//                .mapToLong(point -> point.x)
-//                .limit(fibonacciNumbersCount)
-//                .forEach(System.out::println);
     }
 }
