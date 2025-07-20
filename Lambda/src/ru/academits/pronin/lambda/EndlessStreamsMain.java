@@ -1,7 +1,5 @@
 package ru.academits.pronin.lambda;
 
-// import java.awt.*;
-
 import java.util.Scanner;
 import java.util.stream.DoubleStream;
 import java.util.stream.Stream;
