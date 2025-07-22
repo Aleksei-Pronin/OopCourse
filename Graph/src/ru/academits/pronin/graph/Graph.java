@@ -1,19 +1,35 @@
 package ru.academits.pronin.graph;
 
+import java.util.Arrays;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Queue;
-import java.util.function.Consumer;
+import java.util.function.IntConsumer;
 
 public class Graph {
     private final int[][] edges;
 
     public Graph(int[][] edges) {
-        this.edges = edges;
+        if (edges == null) {
+            throw new NullPointerException("Матрица смежности не может быть null");
+        }
+
+        int size = edges.length;
+        this.edges = new int[size][];
+
+        for (int i = 0; i < size; i++) {
+            if (edges[i] == null) {
+                throw new NullPointerException("Матрица смежности не может содержать null строки");
+            } else if (edges[i].length != size) {
+                throw new IllegalArgumentException("Матрица смежности должна быть квадратной");
+            }
+            this.edges[i] = Arrays.copyOf(edges[i], edges[i].length);
+        }
     }
 
-    public void traverseGraphInBreadth(Consumer<Integer> action) {
+    public void traverseGraphInBreadth(IntConsumer action) {
         int size = edges.length;
+
         if (size == 0) {
             return;
         }
@@ -47,7 +63,7 @@ public class Graph {
         }
     }
 
-    public void traverseGraphInDeep(Consumer<Integer> action) {
+    public void traverseGraphInDeep(IntConsumer action) {
         int size = edges.length;
         if (size == 0) {
             return;
@@ -82,7 +98,7 @@ public class Graph {
         }
     }
 
-    public void traverseGraphInDeepRecursive(Consumer<Integer> action) {
+    public void traverseGraphInDeepRecursive(IntConsumer action) {
         int size = edges.length;
         if (size == 0) {
             return;
@@ -97,7 +113,7 @@ public class Graph {
         }
     }
 
-    private void traverseGraphInDeepRecursive(int vertex, boolean[] visited, Consumer<Integer> action) {
+    private void traverseGraphInDeepRecursive(int vertex, boolean[] visited, IntConsumer action) {
         action.accept(vertex);
         visited[vertex] = true;
 
