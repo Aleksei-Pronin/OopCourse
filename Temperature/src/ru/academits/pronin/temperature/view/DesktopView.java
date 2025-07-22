@@ -7,44 +7,78 @@ import java.util.List;
 
 public class DesktopView implements View {
     private final List<ActionListener> listeners = new ArrayList<>();
-    private double celsiusTemperature;
-    private JLabel resultLabel;
+    private JTextField outputField;
+    private JTextField inputField;
+
+    private JComboBox<String> fromScaleCombo;
+    private JComboBox<String> toScaleCombo;
 
     @Override
     public void start() {
         SwingUtilities.invokeLater(() -> {
-            JFrame frame = new JFrame("GUI Application");
+            JFrame frame = new JFrame("Temperature converter");
 
             frame.setSize(600, 400);
             frame.setLocationRelativeTo(null);
             frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
+            String[] scales = {"Celsius (°C)", "Kelvin (K)", "Fahrenheit (°F)"};
+            fromScaleCombo = new JComboBox<>(scales);
+            toScaleCombo = new JComboBox<>(scales);
+
+            inputField = new JTextField(10);
+            outputField = new JTextField(10);
+            outputField.setEditable(false);
+
             JPanel panel = new JPanel();
-            JTextField celsiusTemperatureField = new JTextField(20);
 
-            JButton convertButton = new JButton("Convert");
-            convertButton.addActionListener(e -> {
-                try {
-                    celsiusTemperature = Double.parseDouble(celsiusTemperatureField.getText());
+            JButton convertButton = getJButton(frame);
 
-                    for (ActionListener listener : listeners) {
-                        listener.actionPerformed(e);
-                    }
-                } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(frame, "Ошибка", "Температура должна быть числом", JOptionPane.ERROR_MESSAGE);
-                }
-            });
+            panel.add(new JLabel("From scale:"));
+            panel.add(fromScaleCombo);
 
-            JLabel resultLabel = new JLabel();
+            panel.add(new JLabel("Input value:"));
+            panel.add(inputField);
 
-            panel.add(celsiusTemperatureField);
+            panel.add(new JLabel("To scale:"));
+            panel.add(toScaleCombo);
+
+            panel.add(new JLabel("Result:"));
+            panel.add(outputField);
+
             panel.add(convertButton);
-            panel.add(resultLabel);
 
-            frame.add(frame);
-
+            frame.add(panel);
             frame.setVisible(true);
         });
+    }
+
+    private JButton getJButton(JFrame frame) {
+        JButton convertButton = new JButton("Convert");
+
+        convertButton.addActionListener(e -> {
+            try {
+                for (ActionListener listener : listeners) {
+                    listener.actionPerformed(e);
+                }
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(
+                        frame,
+                        "The temperature must be a number",
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE
+                );
+            } catch (IllegalArgumentException ex) {
+                JOptionPane.showMessageDialog(
+                        frame,
+                        "The temperature cannot be below absolute zero",
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE
+                );
+            }
+        });
+
+        return convertButton;
     }
 
     @Override
@@ -53,12 +87,22 @@ public class DesktopView implements View {
     }
 
     @Override
-    public double getCelsiusTemperature() {
-        return celsiusTemperature;
+    public String getInputScale() {
+        return (String) fromScaleCombo.getSelectedItem();
     }
 
     @Override
-    public void showResults(double kelvinTemperature, double fahrenheitTemperature) {
-        resultLabel.setText(String.format("Результат...", kelvinTemperature, fahrenheitTemperature));
+    public String getOutputScale() {
+        return (String) toScaleCombo.getSelectedItem();
+    }
+
+    @Override
+    public double getInputTemperature() {
+        return Double.parseDouble(inputField.getText());
+    }
+
+    @Override
+    public void showOutputTemperature(double outputTemperature) {
+        outputField.setText(String.format("%.2f", outputTemperature));
     }
 }

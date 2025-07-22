@@ -1,37 +1,53 @@
 package ru.academits.pronin.temperature.model;
 
 public class TemperatureModelImpl implements TemperatureModel {
-    private double celsiusTemperature;
-    private double kelvinTemperature;
-    private double fahrenheitTemperature;
+    private static final double ABSOLUTE_ZERO_CELSIUS = -273.15;
+    private static final double ABSOLUTE_ZERO_FAHRENHEIT = -459.67;
+    private static final double ABSOLUTE_ZERO_KELVIN = 0;
 
     @Override
-    public void convertTemperature(double celsiusTemperature) {
-        this.celsiusTemperature = celsiusTemperature;
-        kelvinTemperature = getKelvin(celsiusTemperature);
-        fahrenheitTemperature = getFahrenheit(celsiusTemperature);
+    public double convertTemperature(double inputTemperature, String inputScale, String outputScale) {
+        validateTemperature(inputTemperature, inputScale);
+
+        double celsius = switch (inputScale) {
+            case "Kelvin (K)" -> kelvinToCelsius(inputTemperature);
+            case "Fahrenheit (°F)" -> fahrenheitToCelsius(inputTemperature);
+            default -> inputTemperature;
+        };
+
+        return switch (outputScale) {
+            case "Kelvin (K)" -> celsiusToKelvin(celsius);
+            case "Fahrenheit (°F)" -> celsiusToFahrenheit(celsius);
+            default -> celsius;
+        };
     }
 
-    private static double getKelvin(double celsiusTemperature) {
+    private void validateTemperature(double value, String scale) {
+        boolean isBelowAbsoluteZero = switch (scale) {
+            case "Kelvin (K)" -> value < ABSOLUTE_ZERO_KELVIN;
+            case "Fahrenheit (°F)" -> value < ABSOLUTE_ZERO_FAHRENHEIT;
+            case "Celsius (°C)" -> value < ABSOLUTE_ZERO_CELSIUS;
+            default -> false;
+        };
+
+        if (isBelowAbsoluteZero) {
+            throw new IllegalArgumentException();
+        }
+    }
+
+    private static double celsiusToKelvin(double celsiusTemperature) {
         return celsiusTemperature + 273.15;
     }
 
-    private static double getFahrenheit(double celsiusTemperature) {
+    private static double celsiusToFahrenheit(double celsiusTemperature) {
         return celsiusTemperature * 1.8 + 32;
     }
 
-    @Override
-    public double getCelsiusTemperature() {
-        return celsiusTemperature;
+    private static double kelvinToCelsius(double kelvinTemperature) {
+        return kelvinTemperature - 273.15;
     }
 
-    @Override
-    public double getKelvinTemperature() {
-        return kelvinTemperature;
-    }
-
-    @Override
-    public double getFahrenheitTemperature() {
-        return fahrenheitTemperature;
+    private static double fahrenheitToCelsius(double fahrenheitTemperature) {
+        return (fahrenheitTemperature - 32) / 1.8;
     }
 }

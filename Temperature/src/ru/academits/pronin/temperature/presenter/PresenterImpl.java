@@ -23,7 +23,12 @@ public class PresenterImpl implements Presenter, ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        model.convertTemperature(view.getCelsiusTemperature());
-        view.showResults(model.getKelvinTemperature(), model.getFahrenheitTemperature());
+        String inputScale = view.getInputScale();
+        String outputScale = view.getOutputScale();
+
+        double inputTemperature = view.getInputTemperature();
+        double resultTemperature = model.convertTemperature(inputTemperature, inputScale, outputScale);
+
+        view.showOutputTemperature(resultTemperature);
     }
 }

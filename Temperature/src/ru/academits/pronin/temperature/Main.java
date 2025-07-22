@@ -13,7 +13,5 @@ public class Main {
         View view = new DesktopView();
         Presenter presenter = new PresenterImpl(temperatureModel, view);
         presenter.start();
-
-
     }
 }

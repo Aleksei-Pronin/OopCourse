@@ -7,7 +7,11 @@ public interface View {
 
     void addConvertListener(ActionListener actionListener);
 
-    double getCelsiusTemperature();
+    String getInputScale();
 
-    void showResults(double kelvinTemperature, double fahrenheitTemperature);
+    String getOutputScale();
+
+    double getInputTemperature();
+
+    void showOutputTemperature(double outputTemperature);
 }
