@@ -20,9 +20,13 @@ public class Graph {
         for (int i = 0; i < size; i++) {
             if (edges[i] == null) {
                 throw new NullPointerException("Матрица смежности не может содержать null строки");
-            } else if (edges[i].length != size) {
-                throw new IllegalArgumentException("Матрица смежности должна быть квадратной");
             }
+
+            if (edges[i].length != size) {
+                throw new IllegalArgumentException(String.format(
+                        "Матрица смежности должна быть квадратной, количество строк = %d, длина строки с индексом %d = %d", size, i, edges[i].length));
+            }
+
             this.edges[i] = Arrays.copyOf(edges[i], edges[i].length);
         }
     }
@@ -65,6 +69,7 @@ public class Graph {
 
     public void traverseGraphInDeep(IntConsumer action) {
         int size = edges.length;
+
         if (size == 0) {
             return;
         }
@@ -100,6 +105,7 @@ public class Graph {
 
     public void traverseGraphInDeepRecursive(IntConsumer action) {
         int size = edges.length;
+
         if (size == 0) {
             return;
         }
