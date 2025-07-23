@@ -18,10 +18,13 @@ public class DesktopView implements View {
     public void start() {
         SwingUtilities.invokeLater(() -> {
             JFrame frame = new JFrame("Temperature converter");
+            Image img = Toolkit.getDefaultToolkit().getImage("icon.png");
+            frame.setIconImage(img);
 
             frame.setSize(600, 400);
             frame.setLocationRelativeTo(null);
             frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+            frame.setResizable(false);
 
             String[] scales = {"Celsius (°C)", "Kelvin (K)", "Fahrenheit (°F)"};
             fromScaleCombo = new JComboBox<>(scales);
@@ -31,32 +34,38 @@ public class DesktopView implements View {
             outputField = new JTextField(10);
             outputField.setEditable(false);
 
-            JPanel panel = new JPanel(new GridLayout(4, 1, 3, 3));
+            JPanel mainPanel = new JPanel();
+            mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+            mainPanel.setLayout(new BorderLayout(10, 40));
 
-            JButton convertButton = getJButton(frame);
+            JPanel scalesPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 20));
+            JPanel ioPanel = new JPanel(new GridLayout(2, 2, 15, 15));
+            JPanel inputPanel = new JPanel();
+            JPanel outputPanel = new JPanel();
+            JPanel buttonPanel = new JPanel();
 
-            JPanel scalesPanel = new JPanel();
             scalesPanel.add(new JLabel("From scale:"));
             scalesPanel.add(fromScaleCombo);
             scalesPanel.add(new JLabel("To scale:"));
             scalesPanel.add(toScaleCombo);
-            panel.add(scalesPanel);
 
-            JPanel inputPanel = new JPanel(new GridLayout(2, 1));
             inputPanel.add(new JLabel("Input value:"));
             inputPanel.add(inputField);
-            panel.add(inputPanel);
 
-            JPanel buttonPanel = new JPanel();
-            buttonPanel.add(convertButton);
-            panel.add(buttonPanel);
-
-            JPanel outputPanel = new JPanel(new GridLayout(2, 1));
             outputPanel.add(new JLabel("Result:"));
             outputPanel.add(outputField);
-            panel.add(outputPanel);
 
-            frame.add(panel);
+            JButton convertButton = getJButton(frame);
+            buttonPanel.add(convertButton);
+
+            ioPanel.add(inputPanel);
+            ioPanel.add(outputPanel);
+
+            mainPanel.add(scalesPanel, BorderLayout.NORTH);
+            mainPanel.add(ioPanel, BorderLayout.CENTER);
+            mainPanel.add(buttonPanel, BorderLayout.SOUTH);
+
+            frame.add(mainPanel);
             frame.setVisible(true);
         });
     }
