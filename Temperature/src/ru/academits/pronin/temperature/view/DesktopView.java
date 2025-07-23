@@ -1,6 +1,7 @@
 package ru.academits.pronin.temperature.view;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,23 +31,30 @@ public class DesktopView implements View {
             outputField = new JTextField(10);
             outputField.setEditable(false);
 
-            JPanel panel = new JPanel();
+            JPanel panel = new JPanel(new GridLayout(4, 1, 3, 3));
 
             JButton convertButton = getJButton(frame);
 
-            panel.add(new JLabel("From scale:"));
-            panel.add(fromScaleCombo);
+            JPanel scalesPanel = new JPanel();
+            scalesPanel.add(new JLabel("From scale:"));
+            scalesPanel.add(fromScaleCombo);
+            scalesPanel.add(new JLabel("To scale:"));
+            scalesPanel.add(toScaleCombo);
+            panel.add(scalesPanel);
 
-            panel.add(new JLabel("Input value:"));
-            panel.add(inputField);
+            JPanel inputPanel = new JPanel(new GridLayout(2, 1));
+            inputPanel.add(new JLabel("Input value:"));
+            inputPanel.add(inputField);
+            panel.add(inputPanel);
 
-            panel.add(new JLabel("To scale:"));
-            panel.add(toScaleCombo);
+            JPanel buttonPanel = new JPanel();
+            buttonPanel.add(convertButton);
+            panel.add(buttonPanel);
 
-            panel.add(new JLabel("Result:"));
-            panel.add(outputField);
-
-            panel.add(convertButton);
+            JPanel outputPanel = new JPanel(new GridLayout(2, 1));
+            outputPanel.add(new JLabel("Result:"));
+            outputPanel.add(outputField);
+            panel.add(outputPanel);
 
             frame.add(panel);
             frame.setVisible(true);

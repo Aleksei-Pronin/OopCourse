@@ -23,8 +23,7 @@ public class Graph {
             }
 
             if (edges[i].length != size) {
-                throw new IllegalArgumentException(String.format(
-                        "Матрица смежности должна быть квадратной, количество строк = %d, длина строки с индексом %d = %d", size, i, edges[i].length));
+                throw new IllegalArgumentException(String.format("Матрица смежности должна быть квадратной, количество строк = %d, длина строки с индексом %d = %d", size, i, edges[i].length));
             }
 
             this.edges[i] = Arrays.copyOf(edges[i], edges[i].length);
