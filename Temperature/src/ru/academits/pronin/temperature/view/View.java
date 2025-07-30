@@ -1,5 +1,7 @@
 package ru.academits.pronin.temperature.view;
 
+import ru.academits.pronin.temperature.model.Scales;
+
 import java.awt.event.ActionListener;
 
 public interface View {
@@ -7,9 +9,9 @@ public interface View {
 
     void addConvertListener(ActionListener actionListener);
 
-    String getInputScale();
+    Scales getInputScale();
 
-    String getOutputScale();
+    Scales getOutputScale();
 
     double getInputTemperature();
 

@@ -1,5 +1,6 @@
 package ru.academits.pronin.temperature.presenter;
 
+import ru.academits.pronin.temperature.model.Scales;
 import ru.academits.pronin.temperature.model.TemperatureModel;
 import ru.academits.pronin.temperature.view.View;
 
@@ -23,12 +24,12 @@ public class PresenterImpl implements Presenter, ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        String inputScale = view.getInputScale();
-        String outputScale = view.getOutputScale();
+        Scales inputScale = view.getInputScale();
+        Scales outputScale = view.getOutputScale();
 
         double inputTemperature = view.getInputTemperature();
-        double resultTemperature = model.convertTemperature(inputTemperature, inputScale, outputScale);
+        double outputTemperature = model.convertTemperature(inputTemperature, inputScale, outputScale);
 
-        view.showOutputTemperature(resultTemperature);
+        view.showOutputTemperature(outputTemperature);
     }
 }
