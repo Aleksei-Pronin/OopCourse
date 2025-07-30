@@ -12,7 +12,6 @@ public enum Scales {
     private final DoubleUnaryOperator toCelsius;
     private final DoubleUnaryOperator fromCelsius;
 
-
     Scales(double absoluteZero, String name, DoubleUnaryOperator toCelsius, DoubleUnaryOperator fromCelsius) {
         this.absoluteZero = absoluteZero;
         this.name = name;
