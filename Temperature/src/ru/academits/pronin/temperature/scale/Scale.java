@@ -5,12 +5,14 @@ import java.util.function.DoubleUnaryOperator;
 public abstract class Scale {
     private final double absoluteZero;
     private final String name;
+    private final String symbol;
     private final DoubleUnaryOperator toCelsius;
     private final DoubleUnaryOperator fromCelsius;
 
-    public Scale(double absoluteZero, String name, DoubleUnaryOperator toCelsius, DoubleUnaryOperator fromCelsius) {
+    public Scale(double absoluteZero, String name, String symbol, DoubleUnaryOperator toCelsius, DoubleUnaryOperator fromCelsius) {
         this.absoluteZero = absoluteZero;
         this.name = name;
+        this.symbol = symbol;
         this.toCelsius = toCelsius;
         this.fromCelsius = fromCelsius;
     }
@@ -27,8 +29,12 @@ public abstract class Scale {
         return absoluteZero;
     }
 
+    public String getSymbol() {
+        return symbol;
+    }
+
     @Override
     public String toString() {
-        return name;
+        return String.format("%s (%s)", name, symbol);
     }
 }

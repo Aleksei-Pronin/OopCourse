@@ -1,8 +1,5 @@
 package ru.academits.pronin.temperature.view;
 
-import ru.academits.pronin.temperature.scale.Celsius;
-import ru.academits.pronin.temperature.scale.Fahrenheit;
-import ru.academits.pronin.temperature.scale.Kelvin;
 import ru.academits.pronin.temperature.scale.Scale;
 
 import javax.swing.*;
@@ -12,24 +9,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DesktopView implements View {
+    private final Scale[] scales;
+
     private final List<ActionListener> listeners = new ArrayList<>();
 
     private JTextField outputField;
     private JTextField inputField;
 
-    private final Scale[] scales = new Scale[]{
-            new Celsius(),
-            new Fahrenheit(),
-            new Kelvin()
-    };
+    private JFrame frame;
 
     private JComboBox<Scale> fromScaleComboBox;
     private JComboBox<Scale> toScaleComboBox;
 
+    public DesktopView(Scale[] scales) {
+        this.scales = scales;
+    }
+
     @Override
     public void start() {
         SwingUtilities.invokeLater(() -> {
-            JFrame frame = new JFrame("Temperature converter");
+            frame = new JFrame("Temperature converter");
             Image img = Toolkit.getDefaultToolkit().getImage("icon.png");
 
             frame.setIconImage(img);
@@ -85,7 +84,7 @@ public class DesktopView implements View {
             calculationPanel.add(ioPanel, BorderLayout.CENTER);
 
             JPanel buttonPanel = new JPanel();
-            JButton convertButton = getJButton(frame);
+            JButton convertButton = createJButton();
             buttonPanel.add(convertButton);
             buttonPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
 
@@ -98,32 +97,31 @@ public class DesktopView implements View {
         });
     }
 
-    private JButton getJButton(JFrame frame) {
+    private JButton createJButton() {
         JButton convertButton = new JButton("Convert");
 
         convertButton.addActionListener(e -> {
-            try {
-                for (ActionListener listener : listeners) {
-                    listener.actionPerformed(e);
-                }
-            } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(
-                        frame,
-                        "The temperature must be a number",
-                        "Error",
-                        JOptionPane.ERROR_MESSAGE
-                );
-            } catch (IllegalArgumentException ex) {
-                JOptionPane.showMessageDialog(
-                        frame,
-                        "The temperature cannot be below absolute zero",
-                        "Error",
-                        JOptionPane.ERROR_MESSAGE
-                );
+            for (ActionListener listener : listeners) {
+                listener.actionPerformed(e);
             }
         });
 
         return convertButton;
+    }
+
+    @Override
+    public void showError(String message) {
+        JOptionPane.showMessageDialog(
+                frame,
+                message,
+                "Error",
+                JOptionPane.ERROR_MESSAGE
+        );
+    }
+
+    @Override
+    public String getInputText() {
+        return inputField.getText();
     }
 
     @Override

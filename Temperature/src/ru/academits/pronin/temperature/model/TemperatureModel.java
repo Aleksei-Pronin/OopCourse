@@ -1,7 +1,7 @@
 package ru.academits.pronin.temperature.model;
 
-import ru.academits.pronin.temperature.scale.Scale;
+import ru.academits.pronin.temperature.view.View;
 
 public interface TemperatureModel {
-    double convertTemperature(double inputTemperature, Scale inputScale, Scale outputScale);
+    double convertTemperature(View view);
 }

@@ -1,7 +1,6 @@
 package ru.academits.pronin.temperature.presenter;
 
 import ru.academits.pronin.temperature.model.TemperatureModel;
-import ru.academits.pronin.temperature.scale.Scale;
 import ru.academits.pronin.temperature.view.View;
 
 import java.awt.event.ActionEvent;
@@ -24,12 +23,14 @@ public class PresenterImpl implements Presenter, ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        Scale inputScale = view.getInputScale();
-        Scale outputScale = view.getOutputScale();
-
-        double inputTemperature = view.getInputTemperature();
-        double outputTemperature = model.convertTemperature(inputTemperature, inputScale, outputScale);
-
-        view.showOutputTemperature(outputTemperature);
+        try {
+            view.showOutputTemperature(model.convertTemperature(view));
+        } catch (NumberFormatException ex) {
+            view.showError(
+                    String.format("The temperature must be a number. Current value: %s.",
+                            view.getInputText()));
+        } catch (IllegalArgumentException ex) {
+            view.showError(ex.getMessage());
+        }
     }
 }
