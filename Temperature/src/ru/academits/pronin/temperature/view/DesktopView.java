@@ -1,6 +1,9 @@
 package ru.academits.pronin.temperature.view;
 
-import ru.academits.pronin.temperature.model.Scales;
+import ru.academits.pronin.temperature.scale.Celsius;
+import ru.academits.pronin.temperature.scale.Fahrenheit;
+import ru.academits.pronin.temperature.scale.Kelvin;
+import ru.academits.pronin.temperature.scale.Scale;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,11 +13,18 @@ import java.util.List;
 
 public class DesktopView implements View {
     private final List<ActionListener> listeners = new ArrayList<>();
+
     private JTextField outputField;
     private JTextField inputField;
 
-    private JComboBox<Scales> fromScaleComboBox;
-    private JComboBox<Scales> toScaleComboBox;
+    private final Scale[] scales = new Scale[]{
+            new Celsius(),
+            new Fahrenheit(),
+            new Kelvin()
+    };
+
+    private JComboBox<Scale> fromScaleComboBox;
+    private JComboBox<Scale> toScaleComboBox;
 
     @Override
     public void start() {
@@ -28,8 +38,8 @@ public class DesktopView implements View {
             frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
             frame.setResizable(false);
 
-            fromScaleComboBox = new JComboBox<>(Scales.values());
-            toScaleComboBox = new JComboBox<>(Scales.values());
+            fromScaleComboBox = new JComboBox<>(scales);
+            toScaleComboBox = new JComboBox<>(scales);
 
             inputField = new JTextField(10);
             outputField = new JTextField(10);
@@ -122,13 +132,13 @@ public class DesktopView implements View {
     }
 
     @Override
-    public Scales getInputScale() {
-        return (Scales) fromScaleComboBox.getSelectedItem();
+    public Scale getInputScale() {
+        return (Scale) fromScaleComboBox.getSelectedItem();
     }
 
     @Override
-    public Scales getOutputScale() {
-        return (Scales) toScaleComboBox.getSelectedItem();
+    public Scale getOutputScale() {
+        return (Scale) toScaleComboBox.getSelectedItem();
     }
 
     @Override
