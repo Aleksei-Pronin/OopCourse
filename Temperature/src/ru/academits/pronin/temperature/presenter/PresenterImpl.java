@@ -23,14 +23,12 @@ public class PresenterImpl implements Presenter, ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        try {
-            view.showOutputTemperature(model.convertTemperature(view));
-        } catch (NumberFormatException ex) {
-            view.showError(
-                    String.format("The temperature must be a number. Current value: %s.",
-                            view.getInputText()));
-        } catch (IllegalArgumentException ex) {
-            view.showError(ex.getMessage());
-        }
+        view.showOutputTemperature(
+                model.convertTemperature(
+                        view.getInputTemperature(),
+                        view.getInputScale(),
+                        view.getOutputScale()
+                )
+        );
     }
 }

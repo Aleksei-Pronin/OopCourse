@@ -7,6 +7,7 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class DesktopView implements View {
     private final Scale[] scales;
@@ -22,16 +23,16 @@ public class DesktopView implements View {
     private JComboBox<Scale> toScaleComboBox;
 
     public DesktopView(Scale[] scales) {
-        this.scales = scales;
+        this.scales = Objects.requireNonNull(scales, "Scales array should not be null");
     }
 
     @Override
     public void start() {
         SwingUtilities.invokeLater(() -> {
             frame = new JFrame("Temperature converter");
-            Image img = Toolkit.getDefaultToolkit().getImage("icon.png");
+            Image iconImage = Toolkit.getDefaultToolkit().getImage("icon.png");
 
-            frame.setIconImage(img);
+            frame.setIconImage(iconImage);
             frame.setSize(500, 350);
             frame.setLocationRelativeTo(null);
             frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -84,7 +85,7 @@ public class DesktopView implements View {
             calculationPanel.add(ioPanel, BorderLayout.CENTER);
 
             JPanel buttonPanel = new JPanel();
-            JButton convertButton = createJButton();
+            JButton convertButton = createConvertButton();
             buttonPanel.add(convertButton);
             buttonPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
 
@@ -97,14 +98,20 @@ public class DesktopView implements View {
         });
     }
 
-    private JButton createJButton() {
+    private JButton createConvertButton() {
         JButton convertButton = new JButton("Convert");
 
-        convertButton.addActionListener(e -> {
-            for (ActionListener listener : listeners) {
-                listener.actionPerformed(e);
-            }
-        });
+        try {
+            convertButton.addActionListener(e -> {
+                for (ActionListener listener : listeners) {
+                    listener.actionPerformed(e);
+                }
+            });
+        } catch (NumberFormatException ex) {
+            showError(String.format("The temperature must be a number. Current value: %s.", getInputText()));
+        } catch (IllegalArgumentException ex) {
+            showError(ex.getMessage());
+        }
 
         return convertButton;
     }
