@@ -101,17 +101,17 @@ public class DesktopView implements View {
     private JButton createConvertButton() {
         JButton convertButton = new JButton("Convert");
 
-        try {
-            convertButton.addActionListener(e -> {
+        convertButton.addActionListener(e -> {
+            try {
                 for (ActionListener listener : listeners) {
                     listener.actionPerformed(e);
                 }
-            });
-        } catch (NumberFormatException ex) {
-            showError(String.format("The temperature must be a number. Current value: %s.", getInputText()));
-        } catch (IllegalArgumentException ex) {
-            showError(ex.getMessage());
-        }
+            } catch (NumberFormatException ex) {
+                showError(String.format("The temperature must be a number. Current value: %s.", getInputText()));
+            } catch (IllegalArgumentException ex) {
+                showError(ex.getMessage());
+            }
+        });
 
         return convertButton;
     }
