@@ -23,12 +23,16 @@ public class PresenterImpl implements Presenter, ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        view.showOutputTemperature(
-                model.convertTemperature(
-                        view.getInputTemperature(),
-                        view.getInputScale(),
-                        view.getOutputScale()
-                )
-        );
+        try {
+            view.showOutputTemperature(
+                    model.convertTemperature(
+                            view.getInputTemperature(),
+                            view.getInputScale(),
+                            view.getOutputScale()
+                    )
+            );
+        } catch (IllegalArgumentException ex) {
+            view.showError(ex.getMessage());
+        }
     }
 }

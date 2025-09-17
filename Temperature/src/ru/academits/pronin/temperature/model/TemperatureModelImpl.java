@@ -7,8 +7,10 @@ public class TemperatureModelImpl implements TemperatureModel {
     public double convertTemperature(double inputTemperature, Scale inputScale, Scale outputScale) {
         if (inputTemperature < inputScale.getAbsoluteZero()) {
             throw new IllegalArgumentException(
-                    String.format("The temperature cannot be below absolute zero. Current value: %.2f %s. ",
+                    String.format("The temperature cannot be below absolute zero. Current value: %.2f %s. Absolute zero: %.2f %s.",
                             inputTemperature,
+                            inputScale.getSymbol(),
+                            inputScale.getAbsoluteZero(),
                             inputScale.getSymbol())
             );
         }

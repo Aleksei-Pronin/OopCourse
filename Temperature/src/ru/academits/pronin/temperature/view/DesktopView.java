@@ -102,14 +102,12 @@ public class DesktopView implements View {
         JButton convertButton = new JButton("Convert");
 
         convertButton.addActionListener(e -> {
-            try {
-                for (ActionListener listener : listeners) {
-                    listener.actionPerformed(e);
-                }
-            } catch (NumberFormatException ex) {
-                showError(String.format("The temperature must be a number. Current value: %s.", getInputText()));
-            } catch (IllegalArgumentException ex) {
-                showError(ex.getMessage());
+            if (Double.isNaN(getInputTemperature())) {
+                return;
+            }
+
+            for (ActionListener listener : listeners) {
+                listener.actionPerformed(e);
             }
         });
 
@@ -124,11 +122,6 @@ public class DesktopView implements View {
                 "Error",
                 JOptionPane.ERROR_MESSAGE
         );
-    }
-
-    @Override
-    public String getInputText() {
-        return inputField.getText();
     }
 
     @Override
@@ -148,7 +141,20 @@ public class DesktopView implements View {
 
     @Override
     public double getInputTemperature() {
-        return Double.parseDouble(inputField.getText());
+        String inputText = inputField.getText();
+
+        if (inputText.isBlank()) {
+            showError("Input temperature cannot be empty.");
+            return Double.NaN;
+        }
+
+        try {
+            return Double.parseDouble(inputText);
+        } catch (NumberFormatException _) {
+            showError(String.format("The temperature must be a number. Current value: %s.", inputText));
+        }
+
+        return Double.NaN;
     }
 
     @Override

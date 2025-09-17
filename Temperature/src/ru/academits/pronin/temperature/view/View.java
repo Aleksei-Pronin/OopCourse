@@ -18,6 +18,4 @@ public interface View {
     void showOutputTemperature(double outputTemperature);
 
     void showError(String message);
-
-    String getInputText();
 }

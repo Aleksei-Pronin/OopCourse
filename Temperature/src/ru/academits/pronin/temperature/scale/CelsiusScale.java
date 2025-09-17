@@ -1,6 +1,6 @@
 package ru.academits.pronin.temperature.scale;
 
-public class CelsiuScale implements Scale {
+public class CelsiusScale implements Scale {
     private static final double ABSOLUTE_ZERO = -273.15;
     private static final String NAME = "Celsius";
     private static final String SYMBOL = "°C";
